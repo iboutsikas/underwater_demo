@@ -24,9 +24,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _NoiseFrequency: 2.7
-    - _NoiseScale: 2.3
-    - _NoiseSpeed: 4.67
-    - _PixelOffset: 0.005
+    - _NoiseFrequency: 1.56
+    - _NoiseScale: 1.26
+    - _NoiseSpeed: 6.87
+    - _PixelOffset: 0.015
     m_Colors:
-    - _TintColor: {r: 0.20069422, g: 0.49955156, b: 0.7735849, a: 1}
+    - _TintColor: {r: 0.56256676, g: 0.7509851, b: 0.9245283, a: 1}
