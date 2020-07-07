@@ -24,9 +24,18 @@ public class EdtorCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (Application.isEditor && Application.isPlaying)
+        {
+            this.enabled = true;
+        }
+        else
+        {
+            this.enabled = false;
+        }
+
     }
 
+#if UNITY_EDITOR
     // Update is called once per frame
     void Update()
     {
@@ -36,6 +45,7 @@ public class EdtorCamera : MonoBehaviour
         }
         DoKeyboardInput();
     }
+#endif
 
     void DoKeyboardInput()
     {
