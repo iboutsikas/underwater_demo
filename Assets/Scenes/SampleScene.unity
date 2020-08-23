@@ -7523,6 +7523,7 @@ GameObject:
   - component: {fileID: 1114040583}
   - component: {fileID: 1114040587}
   - component: {fileID: 1114040586}
+  - component: {fileID: 1114040588}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: MainCamera
@@ -7674,6 +7675,14 @@ MonoBehaviour:
   Up: 32
   Down: 120
   CameraLock: 325
+--- !u!81 &1114040588
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114040580}
+  m_Enabled: 1
 --- !u!1 &1165340638
 GameObject:
   m_ObjectHideFlags: 0
@@ -9432,8 +9441,13 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2015995193900995500, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
-      propertyPath: Day
+      propertyPath: OverrideDataFeed
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015995193900995500, guid: d0852ad56bcdef143be49af665c5c699,
+        type: 3}
+      propertyPath: TemperatureOverride
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6636081933973671099, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
@@ -9443,7 +9457,7 @@ PrefabInstance:
     - target: {fileID: 9042929422631169863, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.013
       objectReference: {fileID: 0}
     - target: {fileID: 9042929422631169863, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}

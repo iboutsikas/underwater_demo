@@ -1,32 +1,125 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public struct BayData
 {
-    public string SampleDate;
+    public DateTime SampleDate;
     public float Oxygen;
     public float Temperature;
+    public float Salinity;
+    public float Turbidity;
+    public float PH;
+    public float Chlorophyll;
 };
 
 public class DataContainer
 {
-    public static BayData[] Data =
+#if UNITY_EDITOR
+    public static bool UseLiveData = false;
+    private static int mSelectedDay = 0;
+    public static int SelectedDay
     {
-       new BayData() { SampleDate = "06/01/20", Oxygen = 126.0f, Temperature = 20.42f  },
-       new BayData() { SampleDate = "06/02/20", Oxygen =  73.4f, Temperature = 18.65f  },
-       new BayData() { SampleDate = "06/03/20", Oxygen =  79.7f, Temperature = 19.95f  },
-       new BayData() { SampleDate = "06/04/20", Oxygen =  65.0f, Temperature = 21.13f  },
-       new BayData() { SampleDate = "06/05/20", Oxygen =  68.7f, Temperature = 21.68f  },
-       new BayData() { SampleDate = "06/06/20", Oxygen =  56.4f, Temperature = 22.31f  },
-       new BayData() { SampleDate = "06/07/20", Oxygen =  86.5f, Temperature = 22.97f  },
-       new BayData() { SampleDate = "06/08/20", Oxygen = 100.0f, Temperature = 22.82f  },
-       new BayData() { SampleDate = "06/09/20", Oxygen =  80.0f, Temperature = 22.96f  },
-       new BayData() { SampleDate = "06/10/20", Oxygen =  69.2f, Temperature = 22.76f  },
-       new BayData() { SampleDate = "06/11/20", Oxygen =  75.2f, Temperature = 24.47f  },
-       new BayData() { SampleDate = "06/12/20", Oxygen =  68.8f, Temperature = 23.88f  },
-       new BayData() { SampleDate = "06/13/20", Oxygen =  72.2f, Temperature = 23.4f   },
-       new BayData() { SampleDate = "06/14/20", Oxygen =  81.3f, Temperature = 22.63f  },
-       new BayData() { SampleDate = "06/15/20", Oxygen = 111.3f, Temperature = 22.72f  },
+        get
+        {
+            return mSelectedDay;
+        }
+
+        set
+        {
+            if (value < Data.Length && value != mSelectedDay)
+            {
+                mSelectedDay = value;
+                currendData = Data[value];
+            }
+        }
+    }
+
+    private static BayData[] Data =
+    {
+       new BayData() { SampleDate = DateTime.Parse("07/01/20 10:00"), Salinity = -1.0f,  PH = 7.34f, Oxygen = 7.35f, Turbidity = -1.0f, Chlorophyll = -1.0f, Temperature = 80.366f },
+       new BayData() { SampleDate = DateTime.Parse("07/02/20 10:00"), Salinity =  7.67f, PH = 8.35f, Oxygen = 7.04f, Turbidity =  8.7f, Chlorophyll =  9.8f, Temperature = 80.186f },
+       new BayData() { SampleDate = DateTime.Parse("07/03/20 10:00"), Salinity =  8.1f,  PH = 8.01f, Oxygen = 6.05f, Turbidity =  8.6f, Chlorophyll =  9.4f, Temperature = 80.618f },
+       new BayData() { SampleDate = DateTime.Parse("07/04/20 10:00"), Salinity =  7.6f,  PH = 8.01f, Oxygen = 6.10f, Turbidity =  8.9f, Chlorophyll =  8.8f, Temperature = 80.366f },
+       new BayData() { SampleDate = DateTime.Parse("07/05/20 10:00"), Salinity =  9.93f, PH = 9.97f, Oxygen = 5.03f, Turbidity =  6.2f, Chlorophyll =  6.5f, Temperature = 81.230f },
+       new BayData() { SampleDate = DateTime.Parse("07/06/20 10:00"), Salinity = 10.1f,  PH = 7.96f, Oxygen = 5.10f, Turbidity =  5.6f, Chlorophyll =  7.1f, Temperature = 79.592f },
+       new BayData() { SampleDate = DateTime.Parse("07/07/20 10:00"), Salinity =  9.81f, PH = 8.08f, Oxygen = 6.02f, Turbidity =  8.8f, Chlorophyll =  7.4f, Temperature = 79.448f },
+       new BayData() { SampleDate = DateTime.Parse("07/08/20 10:00"), Salinity =  9.79f, PH = 8.25f, Oxygen = 7.08f, Turbidity =  5.7f, Chlorophyll = 16.4f, Temperature = 79.016f },
+       new BayData() { SampleDate = DateTime.Parse("07/09/20 10:00"), Salinity =  9.39f, PH = 7.87f, Oxygen = 6.06f, Turbidity =  8.5f, Chlorophyll =  9.9f, Temperature = 80.222f },
+       new BayData() { SampleDate = DateTime.Parse("07/10/20 10:00"), Salinity = -1.0f,  PH = 7.83f, Oxygen = 6.33f, Turbidity = -1.0f, Chlorophyll = -1.0f, Temperature = 81.626f },
+       new BayData() { SampleDate = DateTime.Parse("07/11/20 10:00"), Salinity = -1.0f,  PH = 7.67f, Oxygen = 6.22f, Turbidity = -1.0f, Chlorophyll = -1.0f, Temperature = 81.752f },
+       new BayData() { SampleDate = DateTime.Parse("07/12/20 10:00"), Salinity = -1.0f,  PH = 7.57f, Oxygen = 6.01f, Turbidity = -1.0f, Chlorophyll = -1.0f, Temperature = 81.680f },
+       new BayData() { SampleDate = DateTime.Parse("07/13/20 10:00"), Salinity = -1.0f,  PH = 7.53f, Oxygen = 5.96f, Turbidity = -1.0f, Chlorophyll = -1.0f, Temperature = 81.662f },
+       new BayData() { SampleDate = DateTime.Parse("07/14/20 10:00"), Salinity =  9.87f, PH = 7.98f, Oxygen = 6.61f, Turbidity = 22.5f, Chlorophyll = 17.7f, Temperature = 81.626f },
+       new BayData() { SampleDate = DateTime.Parse("07/15/20 10:00"), Salinity =  9.6f,  PH = 8.18f, Oxygen = 7.66f, Turbidity = 12.7f, Chlorophyll = 22.8f, Temperature = 82.814f },
+       new BayData() { SampleDate = DateTime.Parse("07/16/20 10:00"), Salinity =  9.64f, PH = 8.17f, Oxygen = 6.47f, Turbidity = 19.4f, Chlorophyll = 15.8f, Temperature = 84.218f },
+       new BayData() { SampleDate = DateTime.Parse("07/17/20 10:00"), Salinity =  9.81f, PH = 8.07f, Oxygen = 6.30f, Turbidity = 13.0f, Chlorophyll = 13.6f, Temperature = 82.940f },
+       new BayData() { SampleDate = DateTime.Parse("07/18/20 10:00"), Salinity =  9.8f,  PH = 7.85f, Oxygen = 5.60f, Turbidity =  6.8f, Chlorophyll =  9.9f, Temperature = 81.752f },
+       new BayData() { SampleDate = DateTime.Parse("07/19/20 10:00"), Salinity =  9.18f, PH = 8.19f, Oxygen = 7.50f, Turbidity =  7.6f, Chlorophyll = 18.4f, Temperature = 82.148f },
+       new BayData() { SampleDate = DateTime.Parse("07/20/20 10:00"), Salinity =  9.33f, PH = 7.82f, Oxygen = 5.67f, Turbidity = 10.7f, Chlorophyll = 17.0f, Temperature = 84.254f },
     };
+    public static int DataPoints => Data.Length;
+#endif
+
+    private static BayData currendData = new BayData()
+    {
+        SampleDate = DateTime.Parse("07/01/20 10:00"),
+        Salinity = -1.0f,
+        PH = 7.34f,
+        Oxygen = 7.35f,
+        Turbidity = -1.0f,
+        Chlorophyll = -1.0f,
+        Temperature = 80.366f
+    };
+
+
+    //public float Oxygen;
+    //public float Temperature;
+    //public float Salinity;
+    //public float Turbidity;
+    //public float PH;
+    //public float Chlorophyll;
+
+    public static BayData GetData()
+    {
+        return currendData;
+    }
+
+    public static float Oxygen
+    {
+        get => currendData.Oxygen;
+        set => currendData.Oxygen = value;
+    }
+
+    public static float Temperature {
+        get => currendData.Temperature;
+        set => currendData.Temperature = value;
+    }
+
+    public static float Salinity
+    {
+        get => currendData.Salinity;
+        set => currendData.Salinity = value;
+    }
+
+    public static float Turbidity
+    {
+        get => currendData.Turbidity;
+        set => currendData.Turbidity = value;
+    }
+
+    public static float PH
+    {
+        get => currendData.PH;
+        set => currendData.PH = value;
+    }
+
+    public static float Chlorophyll
+    {
+        get => currendData.Chlorophyll;
+        set => currendData.Chlorophyll = value;
+    }
+
+
 }
