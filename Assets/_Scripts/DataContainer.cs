@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using System.Collections.Concurrent;
 
 public struct BayData
 {
@@ -28,15 +30,16 @@ public class DataContainer
 
         set
         {
-            if (value < Data.Length && value != mSelectedDay)
+            if (value < HardcodedData.Length && value != mSelectedDay)
             {
                 mSelectedDay = value;
-                currendData = Data[value];
+                currentData = HardcodedData[value];
+                _dataStream.OnNext(currentData);
             }
         }
     }
 
-    private static BayData[] Data =
+    private static BayData[] HardcodedData =
     {
        new BayData() { SampleDate = DateTime.Parse("07/01/20 10:00"), Salinity = -1.0f,  PH = 7.34f, Oxygen = 7.35f, Turbidity = -1.0f, Chlorophyll = -1.0f, Temperature = 80.366f },
        new BayData() { SampleDate = DateTime.Parse("07/02/20 10:00"), Salinity =  7.67f, PH = 8.35f, Oxygen = 7.04f, Turbidity =  8.7f, Chlorophyll =  9.8f, Temperature = 80.186f },
@@ -59,10 +62,22 @@ public class DataContainer
        new BayData() { SampleDate = DateTime.Parse("07/19/20 10:00"), Salinity =  9.18f, PH = 8.19f, Oxygen = 7.50f, Turbidity =  7.6f, Chlorophyll = 18.4f, Temperature = 82.148f },
        new BayData() { SampleDate = DateTime.Parse("07/20/20 10:00"), Salinity =  9.33f, PH = 7.82f, Oxygen = 5.67f, Turbidity = 10.7f, Chlorophyll = 17.0f, Temperature = 84.254f },
     };
-    public static int DataPoints => Data.Length;
+    public static int DataPoints => HardcodedData.Length;
 #endif
 
-    private static BayData currendData = new BayData()
+    static DataContainer()
+    {
+        _dataStream = new BehaviorSubject<BayData>(currentData);
+        SalinityStream = _dataStream.Select(data => data.Salinity);
+        PHStream = _dataStream.Select(data => data.PH);
+        OxygenStream = _dataStream.Select(data => data.Oxygen);
+        TurbidityStream = _dataStream.Select(data => data.Turbidity);
+        ChlorophyllStream = _dataStream.Select(data => data.Chlorophyll);
+        TemperatureStream = _dataStream.Select(data => data.Temperature);
+
+    }
+
+    private static BayData currentData = new BayData()
     {
         SampleDate = DateTime.Parse("07/01/20 10:00"),
         Salinity = -1.0f,
@@ -73,52 +88,98 @@ public class DataContainer
         Temperature = 80.366f
     };
 
+    #region Observables
+    private static BehaviorSubject<BayData> _dataStream;
 
-    //public float Oxygen;
-    //public float Temperature;
-    //public float Salinity;
-    //public float Turbidity;
-    //public float PH;
-    //public float Chlorophyll;
+    public static IObservable<BayData> DataStream => _dataStream.AsObservable();
+    public static IObservable<float> SalinityStream;
+    public static IObservable<float> PHStream;
+    public static IObservable<float> OxygenStream;
+    public static IObservable<float> TurbidityStream;
+    public static IObservable<float> ChlorophyllStream;
+    public static IObservable<float> TemperatureStream;
+    #endregion
 
     public static BayData GetData()
     {
-        return currendData;
+        return currentData;
     }
 
     public static float Oxygen
     {
-        get => currendData.Oxygen;
-        set => currendData.Oxygen = value;
+        get => currentData.Oxygen;
+        set
+        {
+            if (currentData.Oxygen != value)
+            {
+                currentData.Oxygen = value;
+                _dataStream.OnNext(currentData);
+            }
+        }
     }
 
     public static float Temperature {
-        get => currendData.Temperature;
-        set => currendData.Temperature = value;
+        get => currentData.Temperature;
+        set
+        {
+            if (currentData.Temperature != value)
+            {
+                currentData.Temperature = value;
+                _dataStream.OnNext(currentData);
+            }
+        }
     }
 
     public static float Salinity
     {
-        get => currendData.Salinity;
-        set => currendData.Salinity = value;
+        get => currentData.Salinity;
+        set
+        {
+            if (currentData.Salinity != value)
+            {
+                currentData.Salinity = value;
+                _dataStream.OnNext(currentData);
+            }
+        }
     }
 
     public static float Turbidity
     {
-        get => currendData.Turbidity;
-        set => currendData.Turbidity = value;
+        get => currentData.Turbidity;
+        set
+        {
+            if (currentData.Turbidity != value)
+            {
+                currentData.Turbidity = value;
+                _dataStream.OnNext(currentData);
+            }
+        }
     }
 
     public static float PH
     {
-        get => currendData.PH;
-        set => currendData.PH = value;
+        get => currentData.PH;
+        set
+        {
+            if (currentData.PH != value)
+            {
+                currentData.PH = value;
+                _dataStream.OnNext(currentData);
+            }
+        }
     }
 
     public static float Chlorophyll
     {
-        get => currendData.Chlorophyll;
-        set => currendData.Chlorophyll = value;
+        get => currentData.Chlorophyll;
+        set
+        {
+            if (currentData.Chlorophyll != value)
+            {
+                currentData.Chlorophyll = value;
+                _dataStream.OnNext(currentData);
+            }
+        }
     }
 
 

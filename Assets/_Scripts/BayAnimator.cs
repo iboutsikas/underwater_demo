@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
+using UniRx;
+using System;
 
 [RequireComponent(typeof(InstancedColorer))]
 public class BayAnimator : MonoBehaviour
 {
     private Color currentColor = Color.white;
     private InstancedColorer[] colorers;
+    private BayData _data;
+    private IDisposable _subscription;
 
 #if UNITY_EDITOR
     public bool OverrideDataFeed = false;
@@ -24,16 +28,29 @@ public class BayAnimator : MonoBehaviour
     public bool VisualizeOxygen = false;
     public bool AnimateTurbidity = false;
 
+    private void OnValidate()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+            Component c;
+            if (!child.TryGetComponent(typeof(InstancedColorer), out c))
+            {
+                child.gameObject.AddComponent<InstancedColorer>();
+            }
+        }
+    }
+
     void Start()
     {
         colorers = GetComponentsInChildren<InstancedColorer>();
+        _subscription = DataContainer.DataStream.Subscribe(data => _data = data);
     }
 
     private void FixedUpdate()
     {
-        var data = DataContainer.GetData();
-        float temperature = data.Temperature;
-        float oxygen = data.Oxygen;
+        float temperature = _data.Temperature;
+        float oxygen = _data.Oxygen;
 
 #if UNITY_EDITOR
         if (OverrideDataFeed)
@@ -62,5 +79,10 @@ public class BayAnimator : MonoBehaviour
         {
             c.InstanceColor = currentColor;
         }
+    }
+
+    private void OnDestroy()
+    {
+        _subscription.Dispose();
     }
 }
