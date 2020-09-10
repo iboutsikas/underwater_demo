@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class InstancedColorer : MonoBehaviour
 {
 
@@ -18,6 +20,21 @@ public class InstancedColorer : MonoBehaviour
     }
 
     private void FixedUpdate()
+    {
+        UpdateColor();
+    }
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (!EditorApplication.isPlaying)
+        {
+            UpdateColor();
+        }
+#endif
+    }
+
+    private void UpdateColor()
     {
         MaterialPropertyBlock props = new MaterialPropertyBlock();
 

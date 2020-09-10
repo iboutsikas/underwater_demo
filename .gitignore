@@ -61,3 +61,4 @@ crashlytics-build.properties
 # We ignore the models, but not the folder itself
 /[Aa]ssets/_Models/*.*
 !/[Aa]ssets/_Models/.gitkeep
+.git.old

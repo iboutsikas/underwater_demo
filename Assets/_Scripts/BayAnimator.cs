@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UniRx;
-using System;
+using UnityEditor;
 
 [RequireComponent(typeof(InstancedColorer))]
+[ExecuteInEditMode]
 public class BayAnimator : MonoBehaviour
 {
     private Color currentColor = Color.white;
-    private InstancedColorer[] colorers;
+    private List<InstancedColorer> colorers = new List<InstancedColorer>();
     private BayData _data;
     private IDisposable _subscription;
 
@@ -42,12 +45,14 @@ public class BayAnimator : MonoBehaviour
     }
 
     void Start()
-    {
-        colorers = GetComponentsInChildren<InstancedColorer>();
+    { 
+        colorers.AddRange(GetComponentsInChildren<InstancedColorer>());
+        colorers.Insert(0, GetComponent<InstancedColorer>());
+
         _subscription = DataContainer.DataStream.Subscribe(data => _data = data);
     }
 
-    private void FixedUpdate()
+    private void ProcessSelf()
     {
         float temperature = _data.Temperature;
         float oxygen = _data.Oxygen;
@@ -72,9 +77,22 @@ public class BayAnimator : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        ProcessSelf();
+    }
+
     // Update is called once per frame
     void Update()
     {
+#if UNITY_EDITOR
+        if (!EditorApplication.isPlaying)
+        {
+            ProcessSelf();
+        }
+#endif
+        //Debug.Log("Potato");
+
         foreach (var c in colorers)
         {
             c.InstanceColor = currentColor;
@@ -83,6 +101,6 @@ public class BayAnimator : MonoBehaviour
 
     private void OnDestroy()
     {
-        _subscription.Dispose();
+        _subscription?.Dispose();
     }
 }
