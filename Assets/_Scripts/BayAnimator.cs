@@ -67,7 +67,7 @@ public class BayAnimator : MonoBehaviour
 
         if (VisualizeOxygen)
         {
-            float scaleFactor = (float)Mathf.Abs(Mathf.Sin(Time.time * oxygen * 0.1f));
+            float scaleFactor = (float)Mathf.Abs(Mathf.Sin(Time.time * oxygen));
             transform.localScale = Vector3.one + new Vector3(scaleFactor, scaleFactor, scaleFactor);
         }
     }
