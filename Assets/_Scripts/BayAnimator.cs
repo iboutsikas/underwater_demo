@@ -11,6 +11,7 @@ public class BayAnimator : MonoBehaviour
     private Color currentColor = Color.white;
     private List<InstancedColorer> colorers = new List<InstancedColorer>();
     private BayData _data;
+    [SerializeField]
     private IDisposable _subscription;
 
 #if UNITY_EDITOR
@@ -49,11 +50,24 @@ public class BayAnimator : MonoBehaviour
         colorers.AddRange(GetComponentsInChildren<InstancedColorer>());
         colorers.Insert(0, GetComponent<InstancedColorer>());
 
-        _subscription = DataContainer.DataStream.Subscribe(data => _data = data);
+        _subscription = DataContainer.DataStream.Subscribe(data =>
+        {
+            _data = data;
+        });
     }
 
     private void ProcessSelf()
     {
+        // These macros are checked here so we can fake the effect while in edit mode. Not just in play
+#if UNITY_EDITOR
+        if (_subscription == null)
+        {
+            _subscription = DataContainer.DataStream.Subscribe(data =>
+            {
+                _data = data;
+            });
+        }
+#endif
         float temperature = _data.Temperature;
         float oxygen = _data.Oxygen;
 

@@ -5248,7 +5248,7 @@ PrefabInstance:
     - target: {fileID: 2015995193900995500, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
       propertyPath: OverrideDataFeed
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2015995193900995500, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
@@ -5349,40 +5349,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 35324963068418767, guid: d0852ad56bcdef143be49af665c5c699,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 464065957106386085, guid: d0852ad56bcdef143be49af665c5c699,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4859047207708440142, guid: d0852ad56bcdef143be49af665c5c699,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5426759016767023961, guid: d0852ad56bcdef143be49af665c5c699,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6636081933973671099, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
       propertyPath: m_Name
       value: Corithodinium (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6913821448957222112, guid: d0852ad56bcdef143be49af665c5c699,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572865190808950583, guid: d0852ad56bcdef143be49af665c5c699,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9042929422631169863, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
@@ -8322,6 +8292,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2015995193900995500, guid: d0852ad56bcdef143be49af665c5c699,
+        type: 3}
+      propertyPath: OverrideDataFeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4859047207708440142, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
       propertyPath: m_Enabled
@@ -9578,17 +9553,22 @@ PrefabInstance:
     - target: {fileID: 2015995193900995500, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
       propertyPath: TemperatureOverride
-      value: 47.6
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015995193900995500, guid: d0852ad56bcdef143be49af665c5c699,
+        type: 3}
+      propertyPath: OverrideDataFeed
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3370176908698927816, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.07
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3370176908698927816, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3370176908698927816, guid: d0852ad56bcdef143be49af665c5c699,
         type: 3}
