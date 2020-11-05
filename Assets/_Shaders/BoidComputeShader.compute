@@ -1,0 +1,43 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+
+struct Boid
+{
+    float3 Position;
+    float3 Direction;
+    float3 FlockHeading;
+    float3 FlockCenter;
+    float3 SeparationHeading;
+    int    NumFlockmates;
+};
+
+RWStructuredBuffer<Boid> boids;
+int numBoids;
+float viewRadius;
+float avoidRadius;
+
+[numthreads(1024,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float viewRadius2 = viewRadius * viewRadius;
+    float avoidRadius2 = avoidRadius * avoidRadius;
+
+    for (int b = 0; b < numBoids; b++) {
+        if (id.x != b) {
+            Boid the_boid = boids[b];
+            float3 offset = the_boid.Position - boids[id.x].Position;
+            float sqrDst = offset.x * offset.x + offset.y * offset.y + offset.z * offset.z;
+
+            if (sqrDst < viewRadius2) {
+                boids[id.x].NumFlockmates += 1;
+                boids[id.x].FlockHeading += the_boid.Direction;
+                boids[id.x].FlockCenter += the_boid.Position;
+
+                if (sqrDst < avoidRadius2) {
+                    boids[id.x].SeparationHeading -= offset / sqrDst;
+                }
+            }
+        }
+    }
+}
