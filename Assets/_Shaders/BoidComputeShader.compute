@@ -13,7 +13,7 @@ struct Boid
 };
 
 RWStructuredBuffer<Boid> boids;
-int numBoids;
+uint numBoids;
 float viewRadius;
 float avoidRadius;
 
@@ -23,7 +23,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float viewRadius2 = viewRadius * viewRadius;
     float avoidRadius2 = avoidRadius * avoidRadius;
 
-    for (int b = 0; b < numBoids; b++) {
+    for (uint b = 0; b < numBoids; b++) {
         if (id.x != b) {
             Boid the_boid = boids[b];
             float3 offset = the_boid.Position - boids[id.x].Position;
@@ -35,6 +35,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
                 boids[id.x].FlockCenter += the_boid.Position;
 
                 if (sqrDst < avoidRadius2) {
+
                     boids[id.x].SeparationHeading -= offset / sqrDst;
                 }
             }

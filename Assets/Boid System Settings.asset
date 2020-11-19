@@ -17,13 +17,11 @@ MonoBehaviour:
   PerceptionRadius: 2.5
   AvoidanceRadius: 1
   MaxSteerForce: 3
-  AlignmentWeight: 1
+  AlignmentWeight: 1.09
   CohesionWeight: 0.8
-  SeparationWeight: 1.51
+  SeparationWeight: 1.17
   TargetWeight: 1
-  LeadershipWeight: 1
-  LeadershipVelocity: 10
-  CurlWeight: 10
+  CurlWeight: 5.51
   ObstacleMask:
     serializedVersion: 2
     m_Bits: 256

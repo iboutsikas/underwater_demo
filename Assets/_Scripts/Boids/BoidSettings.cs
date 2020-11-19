@@ -16,7 +16,7 @@ public class BoidSettings : ScriptableObject
     public float SeparationWeight = 1;
 
     public float TargetWeight = 1;
-#if USE_LEDERSHIP
+#if USE_LEADERSHIP
     public float LeadershipWeight = 1;
     public float LeadershipVelocity = 10.0f;
 #endif
