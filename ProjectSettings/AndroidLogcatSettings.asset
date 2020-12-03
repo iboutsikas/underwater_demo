@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "9889db474231424d48",
     "m_SelectedPackage": {
-        "deviceId": "9889db474231424d48",
-        "name": "com.DefaultCompany.UndertheBay",
-        "processId": 14422,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,55 +11,37 @@
         {
             "deviceId": "9889db474231424d48",
             "name": "com.DefaultCompany.UndertheBay",
-            "processId": 31756,
-            "exited": false
+            "processId": 8008,
+            "exited": true
+        },
+        {
+            "deviceId": "9889db474231424d48",
+            "name": "com.DefaultCompany.UndertheBayARCompanion",
+            "processId": 14104,
+            "exited": true
+        },
+        {
+            "deviceId": "9889db474231424d48",
+            "name": "com.DefaultCompany.UndertheBayARCompanion",
+            "processId": 15860,
+            "exited": true
         },
         {
             "deviceId": "9889db474231424d48",
             "name": "com.DefaultCompany.UndertheBay",
-            "processId": 879,
-            "exited": false
+            "processId": 20902,
+            "exited": true
         },
         {
             "deviceId": "9889db474231424d48",
             "name": "com.DefaultCompany.UndertheBay",
-            "processId": 2421,
-            "exited": false
+            "processId": 22941,
+            "exited": true
         },
         {
             "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 3246,
-            "exited": false
-        },
-        {
-            "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 11214,
-            "exited": false
-        },
-        {
-            "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 5452,
-            "exited": false
-        },
-        {
-            "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 6661,
-            "exited": false
-        },
-        {
-            "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 12823,
-            "exited": false
-        },
-        {
-            "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 14422,
+            "name": "com.DefaultCompany.UndertheBayARCompanion",
+            "processId": 4462,
             "exited": false
         }
     ],

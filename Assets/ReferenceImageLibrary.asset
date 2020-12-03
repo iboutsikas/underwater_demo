@@ -16,22 +16,72 @@ MonoBehaviour:
   m_GuidHigh: 15226108369808086959
   m_Images:
   - m_SerializedGuid:
-      m_GuidLow: 5322584607079818183
-      m_GuidHigh: 16526220439096383121
+      m_GuidLow: 4862140561083747565
+      m_GuidHigh: 6347636970946119563
     m_SerializedTextureGuid:
       m_GuidLow: 5211296006150390487
       m_GuidHigh: 15870426581118854062
-    m_Size: {x: 0.1, y: 0.12972973}
+    m_Size: {x: 1, y: 1.2972972}
     m_SpecifySize: 1
     m_Name: dino-WC-05_scaled
     m_Texture: {fileID: 2800000, guid: 620182d73e1b4852aea381f1e3143fdc, type: 3}
   - m_SerializedGuid:
-      m_GuidLow: 5250555929886383637
-      m_GuidHigh: 29591581627389332
+      m_GuidLow: 4677650462602754676
+      m_GuidHigh: 5583203020719714711
     m_SerializedTextureGuid:
       m_GuidLow: 5500795170799877487
       m_GuidHigh: 401360891408535969
-    m_Size: {x: 0, y: 0}
-    m_SpecifySize: 0
+    m_Size: {x: 1, y: 1.3610586}
+    m_SpecifySize: 1
     m_Name: dino-WC-06_scaled
+    m_Texture: {fileID: 2800000, guid: 39b5fd6fc0104c56a1d123af9aeb9105, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5107861876014425877
+      m_GuidHigh: 13876672127925637812
+    m_SerializedTextureGuid:
+      m_GuidLow: 4706631913491991705
+      m_GuidHigh: 5724208085975517872
+    m_Size: {x: 1, y: 1.3407822}
+    m_SpecifySize: 1
+    m_Name: dinoWC-01_scaled
+    m_Texture: {fileID: 2800000, guid: dc350c9950c94151b04afd10ed78704f, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5141050152418957912
+      m_GuidHigh: 7113292471111011998
+    m_SerializedTextureGuid:
+      m_GuidLow: 5325800540278567265
+      m_GuidHigh: 10683032857329747891
+    m_Size: {x: 1, y: 1.548387}
+    m_SpecifySize: 1
+    m_Name: dinoWC-02_scaled
+    m_Texture: {fileID: 2800000, guid: c3e331610b5f49e9b347f758c8c14194, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5517850722561931646
+      m_GuidHigh: 3349583819721898379
+    m_SerializedTextureGuid:
+      m_GuidLow: 5209478254736824800
+      m_GuidHigh: 4421120315414103728
+    m_Size: {x: 1, y: 1.3333334}
+    m_SpecifySize: 1
+    m_Name: dinoWC-03_scaled
+    m_Texture: {fileID: 2800000, guid: 26b5d9e0c8df484bb04685b580f95a3d, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 4692871470461661624
+      m_GuidHigh: 4879843419859325860
+    m_SerializedTextureGuid:
+      m_GuidLow: 4949931936170476483
+      m_GuidHigh: 18140044798682682781
+    m_Size: {x: 1, y: 1.3114754}
+    m_SpecifySize: 1
+    m_Name: dinoWC-04_scaled
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5380379264645638600
+      m_GuidHigh: 7968387253609278860
+    m_SerializedTextureGuid:
+      m_GuidLow: 5205720190434014320
+      m_GuidHigh: 6359337084348741799
+    m_Size: {x: 1, y: 1.3899614}
+    m_SpecifySize: 1
+    m_Name: dinoWC-07_scaled
+    m_Texture: {fileID: 2800000, guid: 9ee5f4706eee483ea738938f62e74058, type: 3}

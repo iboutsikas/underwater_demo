@@ -90,3 +90,5 @@ Temporary Items
 /[Aa]ssets/_Models/*.*
 !/[Aa]ssets/_Models/.gitkeep
 .git.old
+
+plugins/ARFoundationRemoteSource
