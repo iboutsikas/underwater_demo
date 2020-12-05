@@ -92,3 +92,6 @@ Temporary Items
 .git.old
 
 plugins/ARFoundationRemoteSource
+Packages/com.kyrylokuzyk.arfoundationremote
+Assets/Plugins/ARFoundationRemoteInstaller
+Assets/Plugins/ARFoundationRemoteInstaller.meta

@@ -10,38 +10,44 @@
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 8008,
+            "name": "com.DefaultCompany.UndertheBayARCompanion",
+            "processId": 29131,
             "exited": true
         },
         {
             "deviceId": "9889db474231424d48",
             "name": "com.DefaultCompany.UndertheBayARCompanion",
-            "processId": 14104,
+            "processId": 1022,
             "exited": true
         },
         {
             "deviceId": "9889db474231424d48",
             "name": "com.DefaultCompany.UndertheBayARCompanion",
-            "processId": 15860,
-            "exited": true
-        },
-        {
-            "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 20902,
-            "exited": true
-        },
-        {
-            "deviceId": "9889db474231424d48",
-            "name": "com.DefaultCompany.UndertheBay",
-            "processId": 22941,
+            "processId": 3681,
             "exited": true
         },
         {
             "deviceId": "9889db474231424d48",
             "name": "com.DefaultCompany.UndertheBayARCompanion",
-            "processId": 4462,
+            "processId": 6948,
+            "exited": true
+        },
+        {
+            "deviceId": "9889db474231424d48",
+            "name": "com.DefaultCompany.UndertheBayARCompanion",
+            "processId": 9527,
+            "exited": true
+        },
+        {
+            "deviceId": "9889db474231424d48",
+            "name": "com.DefaultCompany.UndertheBayARCompanion",
+            "processId": 11384,
+            "exited": false
+        },
+        {
+            "deviceId": "9889db474231424d48",
+            "name": "com.microsoft.launcher",
+            "processId": 6181,
             "exited": false
         }
     ],

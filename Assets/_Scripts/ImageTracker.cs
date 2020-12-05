@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class ImageTracker : MonoBehaviour
@@ -43,9 +44,15 @@ public class ImageTracker : MonoBehaviour
     }
 
     private void On_ImageChange(ARTrackedImagesChangedEventArgs args) {
-        DebugText.text = "Added: \n";
+        DebugText.text = "";
+        
+        if (args.added.Count > 0) {
+            DebugText.text += "Added: \n";
+        }
 
         foreach(var image in args.added) {
+            image.transform.localScale = new Vector3(0.01f, 1.0f, 0.01f);
+
             var name = image.referenceImage.name;
             GameObject spawn;
             if (!spawns.TryGetValue(name, out spawn)) {
@@ -60,21 +67,41 @@ public class ImageTracker : MonoBehaviour
 
         }
 
-        DebugText.text += "Removed: \n";
+        if (args.removed.Count > 0) {
+            DebugText.text += "Removed: \n";
+        }
+        
         foreach (var image in args.removed) {
 
             var name = image.referenceImage.name;
+
             GameObject spawn;
             if (spawns.TryGetValue(name, out spawn)) {
                 spawn.SetActive(false);
             }
         }
+        
+        if (args.updated.Count > 0) {
+            DebugText.text += "Updated: \n";
+        }
 
-        foreach (var image in args.updated) {            
+        foreach (var image in args.updated) {
+
             var name = image.referenceImage.name;
+            DebugText.text += name;
+            DebugText.text += '\n';
+
             GameObject spawn;
             if (spawns.TryGetValue(name, out spawn)) {
-                spawn.transform.position = image.transform.position;
+                if (image.trackingState == TrackingState.Limited) {
+                    spawn.SetActive(false);
+                }
+                else {
+                    // The image extents is only valid when the image is being tracked
+                    image.transform.localScale = new Vector3(image.size.x, 1f, image.size.y);
+                    spawn.SetActive(true);
+                    spawn.transform.position = image.transform.position;
+                }
             }
         }
 
