@@ -20,7 +20,7 @@ public class BayAnimatorEditor : Editor
     SerializedProperty overrideOxygen;
     SerializedProperty visualizeOxygen;
     bool showOxygen = true;
-
+#pragma warning disable 0414
     // =================== Turbidity ===================
     //SerializedProperty overrideTurbidity;
     //SerializedProperty visualizeTurbidity;
@@ -37,7 +37,7 @@ public class BayAnimatorEditor : Editor
     // ================= Chlorophyll ===================
     bool visualizeChlorophyll;
     bool showChlorophyll = true;
-
+#pragma warning restore 0414
 
     internal class Styles
     {

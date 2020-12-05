@@ -23,7 +23,11 @@ public struct BoidData {
 public class Boid : MonoBehaviour {
     static Vector3[] Directions;
     static int NumDirectionsToGenerate = 10;
+
+#if USE_LEADERSHIP
     static bool HaveLeader = false;
+#endif
+
     static Boid() {
         Directions = new Vector3[NumDirectionsToGenerate];
 
@@ -42,16 +46,17 @@ public class Boid : MonoBehaviour {
         }
     }
 
-    private SpriteRenderer renderer;
+    private SpriteRenderer spriteRenderer;
     private Transform target;
     private BoidSettings settings;
     private Vector3 velocity;
     private Vector3 selectedDir;
     private Vector3 leadershipDirection;
     private Vector3 acceleration;
-
+#if USE_LEADERSHIP
     private float leaderAccumulator = 0;
     public bool IsLeader = false;
+#endif
     public BoidSpawner spawner;
     public Vector3 Forward => transform.forward;
     public Vector3 Position {
@@ -68,7 +73,7 @@ public class Boid : MonoBehaviour {
     }
 
     private void Start() {
-        renderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void UpdateSelf(BoidData update) {
@@ -164,7 +169,7 @@ public class Boid : MonoBehaviour {
     }
 
     Vector3 CalculateCurlVelocity() {
-        var e = 0.0001f;
+        //var e = 0.0001f;
 
         int x = (int)Position.x;
         int y = (int)Position.y;
@@ -238,16 +243,16 @@ public class Boid : MonoBehaviour {
     }
 
     private void OnDrawGizmos() {
+#if USE_LEADERSHIP
         if (IsLeader) {
             Gizmos.DrawWireSphere(transform.position, settings.PerceptionRadius);
-#if USE_LEADERSHIP
             Gizmos.DrawRay(transform.position, leadershipDirection);
-#endif
             Gizmos.color = Color.red;
             Gizmos.DrawRay(transform.position, acceleration * Time.deltaTime);
             Gizmos.color = Color.magenta;
             Gizmos.DrawRay(transform.position, velocity);
         }
+#endif
 #if false
         var dir = transform.forward * settings.CollisionAvoidDst;
         Gizmos.color = Color.green;

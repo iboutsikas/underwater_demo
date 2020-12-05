@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UniRx;
 using System.Collections.Concurrent;
 
 public struct BayData
@@ -34,7 +33,6 @@ public class DataContainer
             {
                 mSelectedDay = value;
                 currentData = HardcodedData[value];
-                _dataStream.OnNext(currentData);
             }
         }
     }
@@ -67,14 +65,6 @@ public class DataContainer
 
     static DataContainer()
     {
-        _dataStream = new BehaviorSubject<BayData>(currentData);
-        SalinityStream = _dataStream.Select(data => data.Salinity);
-        PHStream = _dataStream.Select(data => data.PH);
-        OxygenStream = _dataStream.Select(data => data.Oxygen);
-        TurbidityStream = _dataStream.Select(data => data.Turbidity);
-        ChlorophyllStream = _dataStream.Select(data => data.Chlorophyll);
-        TemperatureStream = _dataStream.Select(data => data.Temperature);
-
     }
 
     private static BayData currentData = new BayData()
@@ -87,18 +77,6 @@ public class DataContainer
         Chlorophyll = -1.0f,
         Temperature = 80.366f
     };
-
-    #region Observables
-    private static BehaviorSubject<BayData> _dataStream;
-
-    public static IObservable<BayData> DataStream => _dataStream.AsObservable();
-    public static IObservable<float> SalinityStream;
-    public static IObservable<float> PHStream;
-    public static IObservable<float> OxygenStream;
-    public static IObservable<float> TurbidityStream;
-    public static IObservable<float> ChlorophyllStream;
-    public static IObservable<float> TemperatureStream;
-    #endregion
 
     public static BayData GetData()
     {
@@ -113,7 +91,6 @@ public class DataContainer
             if (currentData.Oxygen != value)
             {
                 currentData.Oxygen = value;
-                _dataStream.OnNext(currentData);
             }
         }
     }
@@ -125,7 +102,6 @@ public class DataContainer
             if (currentData.Temperature != value)
             {
                 currentData.Temperature = value;
-                _dataStream.OnNext(currentData);
             }
         }
     }
@@ -138,7 +114,6 @@ public class DataContainer
             if (currentData.Salinity != value)
             {
                 currentData.Salinity = value;
-                _dataStream.OnNext(currentData);
             }
         }
     }
@@ -151,7 +126,6 @@ public class DataContainer
             if (currentData.Turbidity != value)
             {
                 currentData.Turbidity = value;
-                _dataStream.OnNext(currentData);
             }
         }
     }
@@ -164,7 +138,6 @@ public class DataContainer
             if (currentData.PH != value)
             {
                 currentData.PH = value;
-                _dataStream.OnNext(currentData);
             }
         }
     }
@@ -177,7 +150,6 @@ public class DataContainer
             if (currentData.Chlorophyll != value)
             {
                 currentData.Chlorophyll = value;
-                _dataStream.OnNext(currentData);
             }
         }
     }

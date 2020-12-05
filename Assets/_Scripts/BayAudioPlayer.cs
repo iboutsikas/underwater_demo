@@ -37,8 +37,11 @@ public class BayAudioPlayer : MonoBehaviour
     float m_MaxTurbidity = 100.0f;
 
     private AudioSource audioSource;
+    
     [SerializeField]
+    #pragma warning disable 0649
     private AudioClip audioClip;
+    #pragma warning restore 0649
 
     void Start()
     {
