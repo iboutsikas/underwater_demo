@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c2f3b47d1debe499ec7571a94786dc, type: 3}
-  m_Name: Curl Test settings
+  m_Name: Boid System Settings - Scaled
   m_EditorClassIdentifier: 
-  MinSpeed: 2
-  MaxSpeed: 5
-  PerceptionRadius: 2.5
-  AvoidanceRadius: 1
-  MaxSteerForce: 3
-  AlignmentWeight: 0
-  CohesionWeight: 0
-  SeparationWeight: 0
-  TargetWeight: 1
-  CurlWeight: 10
+  MinSpeed: 1.38
+  MaxSpeed: 2.23
+  PerceptionRadius: 0.25
+  AvoidanceRadius: 0.1
+  MaxSteerForce: 0.1
+  AlignmentWeight: 0.1
+  CohesionWeight: 0.08
+  SeparationWeight: 1.27
+  TargetWeight: 0.1
+  CurlWeight: 0.551
   ObstacleMask:
     serializedVersion: 2
     m_Bits: 256
   BoundsRadius: 0.27
-  AvoidCollisionWeight: 10
-  CollisionAvoidDst: 5
+  AvoidCollisionWeight: 2.11
+  CollisionAvoidDst: 2.24

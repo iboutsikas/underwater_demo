@@ -12,76 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
   m_Name: ReferenceImageLibrary
   m_EditorClassIdentifier: 
-  m_GuidLow: 5727828321129837335
-  m_GuidHigh: 15226108369808086959
+  m_GuidLow: 5343228544209511666
+  m_GuidHigh: 15675367441094284177
   m_Images:
   - m_SerializedGuid:
-      m_GuidLow: 5741666298471777358
-      m_GuidHigh: 15691439043920740752
+      m_GuidLow: 5267368524102312377
+      m_GuidHigh: 15336562503123868854
     m_SerializedTextureGuid:
-      m_GuidLow: 4706631913491991705
-      m_GuidHigh: 5724208085975517872
-    m_Size: {x: 0.15, y: 0.20111732}
+      m_GuidLow: 3509689031868006883
+      m_GuidHigh: 16133148351740583834
+    m_Size: {x: 0.122, y: 0.08113477}
     m_SpecifySize: 1
-    m_Name: dinoWC-01_scaled
-    m_Texture: {fileID: 2800000, guid: dc350c9950c94151b04afd10ed78704f, type: 3}
-  - m_SerializedGuid:
-      m_GuidLow: 5153214342389840348
-      m_GuidHigh: 14798797142000514476
-    m_SerializedTextureGuid:
-      m_GuidLow: 5325800540278567265
-      m_GuidHigh: 10683032857329747891
-    m_Size: {x: 1, y: 1.548387}
-    m_SpecifySize: 1
-    m_Name: dinoWC-02_scaled
-    m_Texture: {fileID: 2800000, guid: c3e331610b5f49e9b347f758c8c14194, type: 3}
-  - m_SerializedGuid:
-      m_GuidLow: 4818067064881434236
-      m_GuidHigh: 9705431635920511387
-    m_SerializedTextureGuid:
-      m_GuidLow: 5209478254736824800
-      m_GuidHigh: 4421120315414103728
-    m_Size: {x: 1, y: 1.3333334}
-    m_SpecifySize: 1
-    m_Name: dinoWC-03_scaled
-    m_Texture: {fileID: 2800000, guid: 26b5d9e0c8df484bb04685b580f95a3d, type: 3}
-  - m_SerializedGuid:
-      m_GuidLow: 5638473943804028116
-      m_GuidHigh: 14392187351337080216
-    m_SerializedTextureGuid:
-      m_GuidLow: 4949931936170476483
-      m_GuidHigh: 18140044798682682781
-    m_Size: {x: 1, y: 1.3114754}
-    m_SpecifySize: 1
-    m_Name: dinoWC-04_scaled
-    m_Texture: {fileID: 2800000, guid: bdcd83c3b0de44b19d552763a262befb, type: 3}
-  - m_SerializedGuid:
-      m_GuidLow: 5482687795214634326
-      m_GuidHigh: 306458184021539752
-    m_SerializedTextureGuid:
-      m_GuidLow: 5211296006150390487
-      m_GuidHigh: 15870426581118854062
-    m_Size: {x: 1, y: 1.2972972}
-    m_SpecifySize: 1
-    m_Name: dinoWC-05_scaled
-    m_Texture: {fileID: 2800000, guid: 620182d73e1b4852aea381f1e3143fdc, type: 3}
-  - m_SerializedGuid:
-      m_GuidLow: 5101645155935346197
-      m_GuidHigh: 17632699060957125307
-    m_SerializedTextureGuid:
-      m_GuidLow: 5500795170799877487
-      m_GuidHigh: 401360891408535969
-    m_Size: {x: 1, y: 1.3610586}
-    m_SpecifySize: 1
-    m_Name: dinoWC-06_scaled
-    m_Texture: {fileID: 2800000, guid: 39b5fd6fc0104c56a1d123af9aeb9105, type: 3}
-  - m_SerializedGuid:
-      m_GuidLow: 4803786361891391025
-      m_GuidHigh: 13458541475202116511
-    m_SerializedTextureGuid:
-      m_GuidLow: 5205720190434014320
-      m_GuidHigh: 6359337084348741799
-    m_Size: {x: 1, y: 1.3899614}
-    m_SpecifySize: 1
-    m_Name: dinoWC-07_scaled
-    m_Texture: {fileID: 2800000, guid: 9ee5f4706eee483ea738938f62e74058, type: 3}
+    m_Name: Rafflesia
+    m_Texture: {fileID: 2800000, guid: 5093c1e3eb9430b49a1f2de6f274e4df, type: 3}

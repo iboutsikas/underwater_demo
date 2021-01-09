@@ -257,8 +257,9 @@ public class Boid : MonoBehaviour {
         var dir = transform.forward * settings.CollisionAvoidDst;
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position, dir);
-        Gizmos.DrawRay(transform.position, selectedDir);
         Gizmos.DrawWireSphere(transform.position + dir, settings.BoundsRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, selectedDir);
 #endif
 
 #if false

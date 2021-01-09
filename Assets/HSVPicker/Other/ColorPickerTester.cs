@@ -3,7 +3,7 @@
 public class ColorPickerTester : MonoBehaviour 
 {
 
-    public new Renderer renderer;
+    public Renderer the_renderer;
     public ColorPicker picker;
 
     public Color Color = Color.red;
@@ -13,11 +13,11 @@ public class ColorPickerTester : MonoBehaviour
     {
         picker.onValueChanged.AddListener(color =>
         {
-            renderer.material.color = color;
+            the_renderer.material.color = color;
             Color = color;
         });
 
-		renderer.material.color = picker.CurrentColor;
+		the_renderer.material.color = picker.CurrentColor;
 
         picker.CurrentColor = Color;
     }
