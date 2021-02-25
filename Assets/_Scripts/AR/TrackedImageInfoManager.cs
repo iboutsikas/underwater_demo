@@ -55,6 +55,11 @@ namespace UnityEngine.XR.ARFoundation.Samples {
         void UpdateInfo(ARTrackedImage trackedImage) {
             // Set canvas camera
             var canvas = trackedImage.GetComponentInChildren<Canvas>();
+
+            // We do not have the debug prefab on
+            if (canvas == null)
+                return;
+
             canvas.worldCamera = worldSpaceCanvasCamera;
 
             // Update information about the tracked image

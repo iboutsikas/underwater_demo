@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 6507188729392387179, guid: 4563a4d0a26b50e49a483e3f20f8a14b, type: 3}
   Radius: 1
-  Count: 100
+  Count: 1500
   DebugColor: {r: 0.8867924, g: 0.09620863, b: 0.09620863, a: 0}
   ShowSpawnRegion: 2
 --- !u!114 &3015262990966119718

@@ -47,6 +47,7 @@ public class ImageData {
 
 
 [RequireComponent(typeof(ARTrackedImageManager))]
+[RequireComponent(typeof(ARSessionOrigin))]
 public class CustomImageTracker : MonoBehaviour {
     private ARSession arSession;
     private ARSessionOrigin sessionOrigin;
@@ -123,6 +124,7 @@ public class CustomImageTracker : MonoBehaviour {
 
     StringBuilder m_StringBuilder = new StringBuilder();
     private void OnGUI() {
+#if false
         var fontSize = 50;
         GUI.skin.button.fontSize = fontSize;
         GUI.skin.label.fontSize = fontSize;
@@ -136,6 +138,7 @@ public class CustomImageTracker : MonoBehaviour {
         }
         GUILayout.Label(m_StringBuilder.ToString());
         GUILayout.EndArea();
+#endif
     }
 
     void Start() {
@@ -154,7 +157,7 @@ public class CustomImageTracker : MonoBehaviour {
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs args) {
         foreach (var image in args.added) {
             var name = image.referenceImage.name;
-
+            image.transform.localScale = new Vector3(0.01f, 1f, 0.01f);
             GameObject spawn;
             if (!spawns.TryGetValue(name, out spawn)) {
                 var prefab = prefabsMap[name];
@@ -165,12 +168,10 @@ public class CustomImageTracker : MonoBehaviour {
         }
 
         foreach (var image in args.updated) {
+            image.transform.localScale = new Vector3(0.01f, 1f, 0.01f);
             var imageName = image.referenceImage.name;
+            var pos = image.transform.position;
 
-            //var dir = image.transform.position - sessionOrigin.transform.position;
-            //dir = dir.normalized;
-            var pos = image.transform.position; // + (dir * 60);
-            //pos.y += image.transform.localScale.y;
             GameObject spawn = null;
             if (image.trackingState == TrackingState.Tracking) {
                 if (spawns.TryGetValue(imageName, out spawn)) {

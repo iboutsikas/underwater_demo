@@ -209,7 +209,6 @@ GameObject:
   - component: {fileID: 937528482}
   - component: {fileID: 937528481}
   - component: {fileID: 937528480}
-  - component: {fileID: 937528479}
   - component: {fileID: 937528478}
   - component: {fileID: 937528477}
   m_Layer: 0
@@ -284,30 +283,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: f15a74300155a154d9a5e8b1f07e403f, type: 2}
   _uiManager: {fileID: 0}
---- !u!114 &937528479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937528475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03772b1d367261341ab5441eed6ed896, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HorizontalSensitivity: 1
-  VerticalSensitivity: 1
-  MovementSpeed: 10
-  FlipY: 1
-  FlipX: 0
-  Forwards: 119
-  Backwards: 115
-  Left: 97
-  Right: 100
-  Up: 32
-  Down: 120
-  CameraLock: 325
 --- !u!114 &937528480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,7 +457,6 @@ GameObject:
   - component: {fileID: 1275368285}
   - component: {fileID: 1275368284}
   - component: {fileID: 1275368287}
-  - component: {fileID: 1275368289}
   - component: {fileID: 1275368288}
   m_Layer: 0
   m_Name: AR Session Origin
@@ -548,8 +522,7 @@ MonoBehaviour:
   m_SerializedLibrary: {fileID: 11400000, guid: d92aca9bfb1218e46a6f2692836af5fd,
     type: 2}
   m_MaxNumberOfMovingImages: 4
-  m_TrackedImagePrefab: {fileID: 3312728602301253215, guid: 50a3831f2916c2f4cad212c12eb3e1ef,
-    type: 3}
+  m_TrackedImagePrefab: {fileID: 0}
 --- !u!114 &1275368288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,20 +541,11 @@ MonoBehaviour:
     m_Width: 1
     m_Prefab: {fileID: 3015262990459691982, guid: 3207e5fe61f14514dbc0e7563883e2f7,
       type: 3}
---- !u!114 &1275368289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275368283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d5017ada601b06489f2d30e7287f57c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_WorldSpaceCanvasCamera: {fileID: 937528476}
-  m_DefaultTexture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+  - m_Texture: {fileID: 2800000, guid: c3e331610b5f49e9b347f758c8c14194, type: 3}
+    m_Name: Dino2
+    m_Width: 1
+    m_Prefab: {fileID: 7236174252619624411, guid: ac3e61a0bd12ed14f8b59c0b04f52f42,
+      type: 3}
 --- !u!1 &1439138005
 GameObject:
   m_ObjectHideFlags: 0
