@@ -45,11 +45,15 @@ namespace UnityEngine.XR.ARFoundation.Samples {
         }
 
         void OnEnable() {
+#if ENABLE_AR_DEBUG_OUTPUT
             m_TrackedImageManager.trackedImagesChanged += OnTrackedImagesChanged;
+#endif
         }
 
         void OnDisable() {
+#if ENABLE_AR_DEBUG_OUTPUT
             m_TrackedImageManager.trackedImagesChanged -= OnTrackedImagesChanged;
+#endif
         }
 
         void UpdateInfo(ARTrackedImage trackedImage) {

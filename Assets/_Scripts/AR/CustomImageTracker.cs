@@ -124,7 +124,7 @@ public class CustomImageTracker : MonoBehaviour {
 
     StringBuilder m_StringBuilder = new StringBuilder();
     private void OnGUI() {
-#if false
+#if ENABLE_AR_DEBUG_OUTPUT
         var fontSize = 50;
         GUI.skin.button.fontSize = fontSize;
         GUI.skin.label.fontSize = fontSize;
@@ -157,7 +157,7 @@ public class CustomImageTracker : MonoBehaviour {
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs args) {
         foreach (var image in args.added) {
             var name = image.referenceImage.name;
-            image.transform.localScale = new Vector3(0.01f, 1f, 0.01f);
+            //image.transform.localScale = new Vector3(0.01f, 1f, 0.01f);
             GameObject spawn;
             if (!spawns.TryGetValue(name, out spawn)) {
                 var prefab = prefabsMap[name];
@@ -168,7 +168,7 @@ public class CustomImageTracker : MonoBehaviour {
         }
 
         foreach (var image in args.updated) {
-            image.transform.localScale = new Vector3(0.01f, 1f, 0.01f);
+            //image.transform.localScale = new Vector3(0.01f, 1f, 0.01f);
             var imageName = image.referenceImage.name;
             var pos = image.transform.position;
 
@@ -178,7 +178,7 @@ public class CustomImageTracker : MonoBehaviour {
                     if (!spawn.activeSelf) {
                         spawn.SetActive(true);
                     }
-                    spawn.transform.SetPositionAndRotation(pos, image.transform.rotation);
+                    spawn.transform.position = pos;
                     sessionOrigin.MakeContentAppearAt(spawn.transform, spawn.transform.position, spawn.transform.rotation);
                 }
             }
