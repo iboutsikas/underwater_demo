@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[RequireComponent(typeof(InstancedColorer))]
+[RequireComponent(typeof(InstancedMaterialModifier))]
 [ExecuteInEditMode]
 public class BayAnimator : MonoBehaviour
 {
     private Color currentColor = Color.white;
-    private List<InstancedColorer> colorers = new List<InstancedColorer>();
-    private BayData _data;
+    private float currentTilingOFsset = 0.0f;
 
+    private List<InstancedMaterialModifier> materialModifiers = new List<InstancedMaterialModifier>();
 
 #if UNITY_EDITOR
     public bool OverrideDataFeed = false;
     public float TemperatureOverride = 0.0f;
     public float OxygenOverride = 0.0f;
-    public float TurbidityOverride = 0.0f;
+    [Range(0.0f, 14.0f)]
+    public float PHOverride = 0.0f;
 #endif
 
     public bool VisualizeTemperature = false;
@@ -28,7 +29,14 @@ public class BayAnimator : MonoBehaviour
     public float ColdTemperature = 10.0f;
 
     public bool VisualizeOxygen = false;
-    public bool AnimateTurbidity = false;
+
+    public bool VisualizePH = false;
+    [Range(0.0f, 2.0f)]
+    public float HighOffset = 2.0f;
+    [Range(0.0f, 2.0f)]
+    public float LowOffset = 0.0f;
+    
+
 
     private void OnValidate()
     {
@@ -36,45 +44,102 @@ public class BayAnimator : MonoBehaviour
         {
             var child = transform.GetChild(i);
             Component c;
-            if (!child.TryGetComponent(typeof(InstancedColorer), out c))
+            if (!child.TryGetComponent(typeof(InstancedMaterialModifier), out c))
             {
-                child.gameObject.AddComponent<InstancedColorer>();
+                child.gameObject.AddComponent<InstancedMaterialModifier>();
             }
         }
     }
 
+
+    private void OnEnable()
+    {
+#if UNITY_EDITOR
+        EditorApplication.update += OnEditorUpdate;
+#endif
+    }
+
+    private void OnDisable()
+    {
+#if UNITY_EDITOR
+        EditorApplication.update -= OnEditorUpdate;
+#endif
+    }
+
+    // FixedUpdate is not called on the editor. So we need this workaround so we can see
+    // the effects during design time
+    void OnEditorUpdate()
+    {
+        if (!EditorApplication.isPlaying)
+            ProcessSelf();
+    }
+
     void Start()
     { 
-        colorers.AddRange(GetComponentsInChildren<InstancedColorer>());
-        colorers.Insert(0, GetComponent<InstancedColorer>());
+        materialModifiers.AddRange(GetComponentsInChildren<InstancedMaterialModifier>());
+        var myInstancedColorer = GetComponent<InstancedMaterialModifier>();
+        if (myInstancedColorer != null)
+            materialModifiers.Insert(0, myInstancedColorer);
     }
 
     private void ProcessSelf()
     {
         // These macros are checked here so we can fake the effect while in edit mode. Not just in play
-        _data = DataContainer.GetData();
+        BayData _data = DataContainer.instance.CurrentSample;
+        
+        if (_data == null)
+            return;
+               
+        DoTemperature(_data);
+        DoOxygen(_data);
+        DoPH(_data);
+    }
 
-        float temperature = _data.Temperature;
-        float oxygen = _data.Oxygen;
+    private void DoTemperature(BayData data)
+    {
+        if (!VisualizeTemperature)
+            return;
+
+        float temperature = data.Temperature;
 
 #if UNITY_EDITOR
-        if (OverrideDataFeed)
-        {
-            temperature = TemperatureOverride;
-            oxygen = OxygenOverride;
-        }
+        temperature = OverrideDataFeed ? TemperatureOverride : temperature;
 #endif
-        if (VisualizeTemperature)
+        float t = (temperature - ColdTemperature) / (WarmTemperature - ColdTemperature);
+        currentColor = Color.Lerp(ColdColor, WarmColor, t);
+    }
+
+    private void DoOxygen(BayData data)
+    {
+        if (!VisualizeOxygen)
         {
-            float t = (temperature - ColdTemperature) / (WarmTemperature - ColdTemperature);
-            currentColor = Color.Lerp(ColdColor, WarmColor, t);
+            //transform.localScale = _originalScale;
+            return;
         }
 
-        if (VisualizeOxygen)
-        {
-            float scaleFactor = (float)Mathf.Abs(Mathf.Sin(Time.time * oxygen));
-            transform.localScale = Vector3.one + new Vector3(scaleFactor, scaleFactor, scaleFactor);
-        }
+        float oxygen = data.Oxygen;
+        float time = Time.time;
+#if UNITY_EDITOR
+        time = (float)EditorApplication.timeSinceStartup;
+        oxygen = OverrideDataFeed ? OxygenOverride : oxygen;
+#endif
+        float scaleFactor = (float)Mathf.Abs(Mathf.Sin(time * oxygen));
+        transform.localScale = Vector3.one + new Vector3(scaleFactor, scaleFactor, scaleFactor);
+    }
+
+    private void DoPH(BayData data)
+    {
+        if (!VisualizePH)
+            return;
+
+        float ph = data.PH;
+
+#if UNITY_EDITOR
+        ph = OverrideDataFeed ? PHOverride : ph;
+#endif
+
+        float t = ph / 14;
+        currentTilingOFsset = Mathf.Lerp(LowOffset, HighOffset, t);
     }
 
     private void FixedUpdate()
@@ -85,17 +150,25 @@ public class BayAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-#if UNITY_EDITOR
-        if (!EditorApplication.isPlaying)
+        foreach (var c in materialModifiers)
         {
-            ProcessSelf();
-        }
-#endif
-        //Debug.Log("Potato");
-
-        foreach (var c in colorers)
-        {
-            c.InstanceColor = currentColor;
+            if (VisualizeTemperature)
+            {
+                c.EnableEmission();
+                c.InstanceColor = currentColor;
+            }
+            else
+                c.DisableEmission();
+            
+            if (VisualizePH)
+            {
+                c.EnableOffset();
+                c.InstanceOffset = new Vector2(0, currentTilingOFsset);
+            }
+            else
+            {
+                c.DisableOffset();
+            }
         }
     }
 

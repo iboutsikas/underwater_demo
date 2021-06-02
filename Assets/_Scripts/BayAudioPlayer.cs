@@ -56,7 +56,7 @@ public class BayAudioPlayer : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        var data = DataContainer.GetData();
+        var data = DataContainer.instance.CurrentSample;
         float ph = data.PH;
         float turbidity = data.Turbidity;
 

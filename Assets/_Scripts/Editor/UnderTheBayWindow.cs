@@ -1,44 +1,91 @@
-﻿using UnityEditor;
+﻿using Newtonsoft.Json;
+using Proyecto26;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
 public class UnderTheBayWindow : EditorWindow
 {
-    private static bool useLiveData = false;
-    private static int selectedDay = 1;
+    private static string[] StationNames;
+    
     [MenuItem("Under the Bay/Data stream")]
     public static void ShowWindow()
     {
-        GetWindow<UnderTheBayWindow>(true, "DNR data stream", false);
+        GetWindow<UnderTheBayWindow>(true, "Under the Bay Datastream", false);
+        UpdateStations();        
     }
+
+    private int selectedStation = 0;
+    //private int selectedSample = 0;
 
     private void OnGUI()
     {
-        useLiveData = EditorGUILayout.Toggle("Use \"live\" data", useLiveData);
-        EditorGUILayout.Space(15);
-
-        if (useLiveData)
+        if (StationNames == null || StationNames.Length == 0)
         {
-            selectedDay = EditorGUILayout.IntSlider("Day of data", selectedDay, 1, DataContainer.DataPoints);
-            DataContainer.SelectedDay = selectedDay - 1;
-            BayData data = DataContainer.GetData();
+            UpdateStations();
+        }
 
-            EditorGUILayout.LabelField($"Preview date: {data.SampleDate}");
-            EditorGUILayout.LabelField($"Oxygen Saturation: {data.Oxygen} mg/L");
-            EditorGUILayout.LabelField($"Temperature: {data.Temperature} °F");
-            EditorGUILayout.LabelField($"Salinity: {data.Salinity} ppt");
-            EditorGUILayout.LabelField($"Turbidity: {data.Turbidity} NTU");
-            EditorGUILayout.LabelField($"pH: {data.PH}");
-            EditorGUILayout.LabelField($"Chlorophyll: {data.Chlorophyll} μg/L");
+        DataContainer dc = DataContainer.instance;
+
+        if (GUILayout.Button("Fetch Data"))
+        {
+            UpdateStations();
+            var s = dc.SelectStation(0);
+            selectedStation = 0;
+            dc.GetSamples(s, true);
+            dc.SelectSample(0);
+        }
+
+        EditorGUILayout.LabelField("Stream configuration", EditorStyles.boldLabel);
+
+        var newSelection = EditorGUILayout.Popup("Station", selectedStation, StationNames);
+        Station station = null;
+        if (newSelection != selectedStation)
+        {
+            selectedStation = newSelection;
+            station = dc.SelectStation(selectedStation);
+            dc.GetSamples(station, true);
+            dc.SelectSample(0);
         }
         else
         {
-            DataContainer.Oxygen = EditorGUILayout.Slider("Oxygen (mg/L)", DataContainer.Oxygen, 0.0f, 15.0f);
-            DataContainer.Temperature = EditorGUILayout.Slider("Temperature (°F)", DataContainer.Temperature, 0.0f, 100.0f);
-            DataContainer.Salinity = EditorGUILayout.Slider("Salinity (ppt)", DataContainer.Salinity, 0.0f, 32.0f);
-            DataContainer.Turbidity = EditorGUILayout.Slider("Turbidity (NTU)", DataContainer.Turbidity, 0.0f, 100.0f);
-            DataContainer.PH = EditorGUILayout.Slider("pH", DataContainer.PH, 1.0f, 14.0f);
-            DataContainer.Chlorophyll = EditorGUILayout.Slider("Chlorophyll (μg/L)", DataContainer.Chlorophyll, 0.0f, 100.0f);
+            station = dc.SelectStation(selectedStation);
+            dc.SelectSample(0);
         }
+
+        EditorGUILayout.LabelField($"Last updated: {station.LastUpdate.ToString()}");
+        
+        EditorGUILayout.Space(15);
+        EditorGUILayout.Separator();
+
+        var data = dc.CurrentSample;
+
+        EditorGUILayout.LabelField("This is a dummy");
+        if (data == null)
+            return;
+
+        EditorGUILayout.LabelField($"Preview date: {data.SampleDate}");
+        EditorGUILayout.LabelField($"Oxygen Saturation: {data.Oxygen} mg/L");
+        EditorGUILayout.LabelField($"Temperature: {data.Temperature} °C");
+        EditorGUILayout.LabelField($"Salinity: {data.Salinity} ppt");
+        EditorGUILayout.LabelField($"Turbidity: {data.Turbidity} NTU");
+        EditorGUILayout.LabelField($"pH: {data.PH}");
+        EditorGUILayout.LabelField($"Chlorophyll: {data.Chlorophyll} μg/L");
+
+    }        
+
+    private static void UpdateStations()
+    {
+        var stations = DataContainer.instance.Stations;
+        var names = new List<string>();
+        foreach (var station in stations)
+            names.Add(station.Name);
+
+        StationNames = names.ToArray();
     }
+
 }

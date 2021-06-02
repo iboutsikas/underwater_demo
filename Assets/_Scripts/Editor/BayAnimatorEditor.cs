@@ -12,14 +12,22 @@ public class BayAnimatorEditor : Editor
 
     SerializedProperty warmTemperature;
     SerializedProperty warmColor;
-    SerializedProperty overrideTemperature;
+    SerializedProperty temperatureOverride;
     SerializedProperty visualizeTemperature;
     bool showTemperature = true;
 
     // ==================== Oxygen =====================
-    SerializedProperty overrideOxygen;
+    SerializedProperty oxygenOverride;
     SerializedProperty visualizeOxygen;
     bool showOxygen = true;
+
+    // ======================= pH ======================
+    SerializedProperty visualizePH;
+    SerializedProperty pHOverride;
+    SerializedProperty pHLowOffset;
+    SerializedProperty pHHighOffset;
+    bool showPH = true;
+
 #pragma warning disable 0414
     // =================== Turbidity ===================
     //SerializedProperty overrideTurbidity;
@@ -30,9 +38,7 @@ public class BayAnimatorEditor : Editor
     bool visualizeSalinity;
     bool showSalinity = true;
 
-    // ======================= pH ======================
-    bool visualizePH;
-    bool showPH = true;
+    
 
     // ================= Chlorophyll ===================
     bool visualizeChlorophyll;
@@ -70,6 +76,16 @@ public class BayAnimatorEditor : Editor
             "Visualize Oxygen",
             "Whether oxygen should be animated (i.e change scale)"
         );
+
+        public static GUIContent visualizePhLabel = EditorGUIUtility.TrTextContent(
+            "Visualize pH",
+            "Whether pH should be animated (i.e change main texture offset)"
+        );
+
+        public static GUIContent pHOverrideLabel = EditorGUIUtility.TrTextContent(
+            "Override pH",
+            "This value will be used to replace whatever value is coming in from the data stream"
+        );
     }
 
     void OnEnable()
@@ -81,10 +97,16 @@ public class BayAnimatorEditor : Editor
         warmTemperature = serializedObject.FindProperty(nameof(BayAnimator.WarmTemperature));
         warmColor = serializedObject.FindProperty(nameof(BayAnimator.WarmColor));
         visualizeTemperature = serializedObject.FindProperty(nameof(BayAnimator.VisualizeTemperature));
-        overrideTemperature = serializedObject.FindProperty(nameof(BayAnimator.TemperatureOverride));
+        temperatureOverride = serializedObject.FindProperty(nameof(BayAnimator.TemperatureOverride));
 
         visualizeOxygen = serializedObject.FindProperty(nameof(BayAnimator.VisualizeOxygen));
-        overrideOxygen = serializedObject.FindProperty(nameof(BayAnimator.OxygenOverride));
+        oxygenOverride = serializedObject.FindProperty(nameof(BayAnimator.OxygenOverride));
+
+        visualizePH = serializedObject.FindProperty(nameof(BayAnimator.VisualizePH));
+        pHOverride = serializedObject.FindProperty(nameof(BayAnimator.PHOverride));
+        pHLowOffset = serializedObject.FindProperty(nameof(BayAnimator.LowOffset));
+        pHHighOffset = serializedObject.FindProperty(nameof(BayAnimator.HighOffset));
+
     }
 
     public override void OnInspectorGUI()
@@ -109,7 +131,7 @@ public class BayAnimatorEditor : Editor
 
             if (overrideDataFeed.boolValue)
             {
-                overrideTemperature.floatValue = EditorGUILayout.Slider("Override temperature (°F)", overrideTemperature.floatValue, coldTemperature.floatValue, warmTemperature.floatValue);
+                temperatureOverride.floatValue = EditorGUILayout.Slider("Override temperature (°F)", temperatureOverride.floatValue, coldTemperature.floatValue, warmTemperature.floatValue);
             }
         }
         EditorGUILayout.Separator();
@@ -122,7 +144,23 @@ public class BayAnimatorEditor : Editor
 
             if (overrideDataFeed.boolValue)
             {
-                overrideOxygen.floatValue = EditorGUILayout.FloatField("Override oxygen (mg/L)",overrideOxygen.floatValue);
+                oxygenOverride.floatValue = EditorGUILayout.FloatField("Override oxygen (mg/L)",oxygenOverride.floatValue);
+            }
+        }
+        EditorGUILayout.Separator();
+        DrawHorizontalLine(2);
+
+        // ======================= pH ======================
+        showPH = EditorGUILayout.Foldout(showPH, "pH", true);
+        if (showPH)
+        {
+            EditorGUILayout.PropertyField(visualizePH, Styles.visualizePhLabel);
+            EditorGUILayout.PropertyField(pHLowOffset);
+            EditorGUILayout.PropertyField(pHHighOffset);
+            
+            if (overrideDataFeed.boolValue)
+            {
+                EditorGUILayout.PropertyField(pHOverride, Styles.pHOverrideLabel);
             }
         }
         EditorGUILayout.Separator();
@@ -152,15 +190,7 @@ public class BayAnimatorEditor : Editor
         EditorGUILayout.Separator();
         DrawHorizontalLine(2);
 
-        // ======================= pH ======================
-        showPH = EditorGUILayout.Foldout(showPH, "pH", true);
-        if (showPH)
-        {
-            EditorGUILayout.LabelField("Not implemented yet");
-            visualizePH = EditorGUILayout.Toggle("Visualize pH", visualizePH);
-        }
-        EditorGUILayout.Separator();
-        DrawHorizontalLine(2);
+        
 
         // ================= Chlorophyll ====================
         showChlorophyll = EditorGUILayout.Foldout(showChlorophyll, "Chlorophyll", true);
