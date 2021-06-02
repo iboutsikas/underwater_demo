@@ -8,12 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AR Trigger Scene.unity
     guid: 35f8a8ba24052ae4c8eb5a455e789e46
   - enabled: 0
     path: Assets/Scenes/Boids.unity
     guid: fb27780b099440b4b8b6311052b4fb4e
+  - enabled: 1
+    path: Assets/Scenes/Plane Detection Scene.unity
+    guid: 71a224de1d559ad4e9297e16a431bcf1
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: f8f23b338686d5d41bdae78081fcf4d5,
       type: 2}
