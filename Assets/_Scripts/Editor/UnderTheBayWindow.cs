@@ -64,7 +64,6 @@ public class UnderTheBayWindow : EditorWindow
 
         var data = dc.CurrentSample;
 
-        EditorGUILayout.LabelField("This is a dummy");
         if (data == null)
             return;
 

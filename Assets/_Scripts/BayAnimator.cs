@@ -9,6 +9,7 @@ public class BayAnimator : MonoBehaviour
 {
     private Color currentColor = Color.white;
     private float currentTilingOFsset = 0.0f;
+    private float currentAlpha = 1.0f;
 
     private List<InstancedMaterialModifier> materialModifiers = new List<InstancedMaterialModifier>();
 
@@ -18,6 +19,8 @@ public class BayAnimator : MonoBehaviour
     public float OxygenOverride = 0.0f;
     [Range(0.0f, 14.0f)]
     public float PHOverride = 0.0f;
+    [Range(0.0f, 100.0f)]
+    public float ClorophyllOverride = 0.0f;
 #endif
 
     public bool VisualizeTemperature = false;
@@ -35,6 +38,14 @@ public class BayAnimator : MonoBehaviour
     public float HighOffset = 2.0f;
     [Range(0.0f, 2.0f)]
     public float LowOffset = 0.0f;
+
+    public bool VisualizeChrolophyll = false;
+    [Range(0.0f, 1.0f)]
+    public float MinAlpha = 0.0f;
+    public float MinChlf = 1.0f;
+    [Range(0.0f, 1.0f)]
+    public float MaxAlpha = 1.0f;
+    public float MaxChlf = 100.0f;
     
 
 
@@ -93,8 +104,9 @@ public class BayAnimator : MonoBehaviour
         DoTemperature(_data);
         DoOxygen(_data);
         DoPH(_data);
+        DoChlorophyll(_data);
     }
-
+    
     private void DoTemperature(BayData data)
     {
         if (!VisualizeTemperature)
@@ -142,6 +154,20 @@ public class BayAnimator : MonoBehaviour
         currentTilingOFsset = Mathf.Lerp(LowOffset, HighOffset, t);
     }
 
+    private void DoChlorophyll(BayData data)
+    {
+        if (!VisualizeChrolophyll)
+            return;
+
+        float chlf = data.Chlorophyll;
+
+#if UNITY_EDITOR
+        chlf = OverrideDataFeed ? ClorophyllOverride : chlf;
+#endif
+        float t = (chlf - MinChlf) / (MaxChlf - MinChlf);
+        currentAlpha = Mathf.Lerp(MinAlpha, MaxAlpha, t);
+    }
+
     private void FixedUpdate()
     {
         ProcessSelf();
@@ -155,7 +181,7 @@ public class BayAnimator : MonoBehaviour
             if (VisualizeTemperature)
             {
                 c.EnableEmission();
-                c.InstanceColor = currentColor;
+                c.EmissionColor = currentColor;
             }
             else
                 c.DisableEmission();
@@ -168,6 +194,16 @@ public class BayAnimator : MonoBehaviour
             else
             {
                 c.DisableOffset();
+            }
+
+            if (VisualizeChrolophyll)
+            {
+                c.EnableAlpha();
+                c.InstanceAlpha = currentAlpha;
+            }
+            else
+            {
+                c.DisableAlpha();
             }
         }
     }

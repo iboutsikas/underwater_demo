@@ -28,6 +28,15 @@ public class BayAnimatorEditor : Editor
     SerializedProperty pHHighOffset;
     bool showPH = true;
 
+    // ================= Chlorophyll ===================
+    SerializedProperty visualizeChlorophyll;
+    SerializedProperty chlorophyllOverride;
+    SerializedProperty minimumAlpha;
+    SerializedProperty maximumAlpha;
+    SerializedProperty minChlorophyll;
+    SerializedProperty maxChlorophyll;
+    bool showChlorophyll = true;
+
 #pragma warning disable 0414
     // =================== Turbidity ===================
     //SerializedProperty overrideTurbidity;
@@ -37,12 +46,6 @@ public class BayAnimatorEditor : Editor
     // =================== Salinity ====================
     bool visualizeSalinity;
     bool showSalinity = true;
-
-    
-
-    // ================= Chlorophyll ===================
-    bool visualizeChlorophyll;
-    bool showChlorophyll = true;
 #pragma warning restore 0414
 
     internal class Styles
@@ -86,6 +89,31 @@ public class BayAnimatorEditor : Editor
             "Override pH",
             "This value will be used to replace whatever value is coming in from the data stream"
         );
+
+        public static GUIContent visualizeClfLabel = EditorGUIUtility.TrTextContent(
+            "Visualize Chlorophyll",
+            "Whether chlorophyll should be animated (i.e. change transparency)"
+        );
+
+        public static GUIContent minimumAlphaLabel = EditorGUIUtility.TrTextContent(
+            "Minimum Opacity",
+            "This is the minimum opacity the model will get to"
+        );
+
+        public static GUIContent maximummAlphaLabel = EditorGUIUtility.TrTextContent(
+            "Maximum Opacity",
+            "This is the maximum opacity the model will get to"
+        );
+
+        public static GUIContent minimumClfLabel = EditorGUIUtility.TrTextContent(
+            "Minimum Chlorophyll",
+            "If chlorophyll is bellow this number, the model will always have its minimum opacity"
+        );
+
+        public static GUIContent maximumClfLabel = EditorGUIUtility.TrTextContent(
+            "Maximum Chlorophyll",
+            "If chlorophyll is above this number, the model will always have its maximum opacity"
+        );
     }
 
     void OnEnable()
@@ -107,6 +135,12 @@ public class BayAnimatorEditor : Editor
         pHLowOffset = serializedObject.FindProperty(nameof(BayAnimator.LowOffset));
         pHHighOffset = serializedObject.FindProperty(nameof(BayAnimator.HighOffset));
 
+        visualizeChlorophyll = serializedObject.FindProperty(nameof(BayAnimator.VisualizeChrolophyll));
+        minimumAlpha = serializedObject.FindProperty(nameof(BayAnimator.MinAlpha));
+        maximumAlpha = serializedObject.FindProperty(nameof(BayAnimator.MaxAlpha));
+        minChlorophyll = serializedObject.FindProperty(nameof(BayAnimator.MinChlf));
+        maxChlorophyll = serializedObject.FindProperty(nameof(BayAnimator.MaxChlf));
+        chlorophyllOverride = serializedObject.FindProperty(nameof(BayAnimator.ClorophyllOverride));
     }
 
     public override void OnInspectorGUI()
@@ -165,6 +199,26 @@ public class BayAnimatorEditor : Editor
         }
         EditorGUILayout.Separator();
         DrawHorizontalLine(2);
+
+        // ================= Chlorophyll ====================
+        showChlorophyll = EditorGUILayout.Foldout(showChlorophyll, "Chlorophyll", true);
+        if (showChlorophyll)
+        {
+            EditorGUILayout.PropertyField(visualizeChlorophyll, Styles.visualizeClfLabel);
+
+            EditorGUILayout.PropertyField(minimumAlpha, Styles.minimumAlphaLabel);
+            EditorGUILayout.PropertyField(minChlorophyll, Styles.minimumClfLabel);
+            EditorGUILayout.PropertyField(maximumAlpha, Styles.maximummAlphaLabel);
+            EditorGUILayout.PropertyField(maxChlorophyll, Styles.maximumClfLabel);
+
+
+            if (overrideDataFeed.boolValue)
+            {
+                EditorGUILayout.PropertyField(chlorophyllOverride);
+            }
+        }
+        EditorGUILayout.Separator();
+        DrawHorizontalLine(2);
 #if false
 
         // =================== Turbidity ===================
@@ -192,13 +246,7 @@ public class BayAnimatorEditor : Editor
 
         
 
-        // ================= Chlorophyll ====================
-        showChlorophyll = EditorGUILayout.Foldout(showChlorophyll, "Chlorophyll", true);
-        if (showChlorophyll)
-        {
-            EditorGUILayout.LabelField("Not implemented yet");
-            visualizeChlorophyll = EditorGUILayout.Toggle("Visualize Chlorophyll", visualizeChlorophyll);
-        }
+        
 
         // These are all down here so we can add any checks in groups instead of
         // doing it when the gui is updated.

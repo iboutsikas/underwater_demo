@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -9,36 +10,41 @@ public class InstancedMaterialModifier : MonoBehaviour
     static readonly string EmissionFlagName = "_EMISSION";
     static readonly string EmissionColorPropertyName = "_EmissionColor";
     static readonly string TexturePropertyName = "_BaseMap";
+    static readonly string BaseColorPropertyName = "_BaseColor";
 
     private Renderer meshRenderer;
     private bool emissionEnabled = false;
     private bool offsetEnabled = false;
+    private bool alphaEnabled = false;
 
     [SerializeField]
     private Material _material;
 
     [SerializeField]
-    private Color instanceColor = Color.white;
+    private Color emissionColor = Color.white;
     private Color _originalColor = Color.black;
 
-    public Color InstanceColor { get => instanceColor; 
+    public Color EmissionColor { get => emissionColor; 
         set { 
-            instanceColor = value;
+            emissionColor = value;
         } 
     }
 
     [SerializeField]
     public Vector2 InstanceOffset = new Vector2(0, 0);
+    [SerializeField]
+    public float InstanceAlpha = 1.0f;
 
     private void OnValidate()
     {
         if (meshRenderer == null)
             meshRenderer = GetComponent<Renderer>();
-
-        _material = new Material(meshRenderer.sharedMaterial.shader);
-        //_material.name = "Potato";
-        _material.CopyPropertiesFromMaterial(meshRenderer.sharedMaterial);
-        meshRenderer.material = _material;
+        if (_material == null)
+        {
+            _material.CopyPropertiesFromMaterial(meshRenderer.sharedMaterial);
+            _material = new Material(meshRenderer.sharedMaterial.shader);
+            meshRenderer.material = _material;
+        }
     }
 
     void Awake()
@@ -48,7 +54,6 @@ public class InstancedMaterialModifier : MonoBehaviour
         if (_material == null)
         {
             _material = new Material(meshRenderer.sharedMaterial.shader);
-            _material.name = "Potato";
             _material.CopyPropertiesFromMaterial(meshRenderer.sharedMaterial);
             meshRenderer.material = _material;
         }
@@ -99,13 +104,31 @@ public class InstancedMaterialModifier : MonoBehaviour
         offsetEnabled = false;
     }
 
+    public void EnableAlpha()
+    {
+        if (alphaEnabled)
+            return;
+
+        alphaEnabled = true;
+    }
+
+    public void DisableAlpha()
+    {
+        if (!alphaEnabled)
+            return;
+
+        alphaEnabled = false;
+    }
+
     private void FixedUpdate()
     {
         if (meshRenderer == null)
             return;
         UpdateColor();
         UpdateOffset();
+        UpdateAlpha();
     }
+        
 
     private void OnEnable()
     {
@@ -128,6 +151,7 @@ public class InstancedMaterialModifier : MonoBehaviour
         {
             UpdateColor();
             UpdateOffset();
+            UpdateAlpha();
         }
 #endif
     }
@@ -140,9 +164,19 @@ public class InstancedMaterialModifier : MonoBehaviour
 
         MaterialPropertyBlock props = new MaterialPropertyBlock();
 
-        props.SetColor(EmissionColorPropertyName, InstanceColor);
+        props.SetColor(EmissionColorPropertyName, EmissionColor);
         
         meshRenderer.SetPropertyBlock(props);
+    }
+
+    private void UpdateAlpha()
+    {
+        if (!alphaEnabled)
+            return;
+
+        var color = _material.color;
+        color.a = InstanceAlpha;
+        _material.color = color;
     }
 
     private void UpdateOffset()
