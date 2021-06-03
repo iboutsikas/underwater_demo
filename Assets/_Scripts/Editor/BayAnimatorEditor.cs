@@ -5,14 +5,16 @@ using UnityEditor;
 [CustomEditor(typeof(BayAnimator))]
 public class BayAnimatorEditor : Editor
 {
+    SerializedProperty thisScript;
+
     SerializedProperty overrideDataFeed;
     // ================== Temperature ==================
     SerializedProperty coldTemperature;
     SerializedProperty coldColor;
-
     SerializedProperty warmTemperature;
     SerializedProperty warmColor;
     SerializedProperty temperatureOverride;
+    SerializedProperty temperatureBias;
     SerializedProperty visualizeTemperature;
     bool showTemperature = true;
 
@@ -70,6 +72,11 @@ public class BayAnimatorEditor : Editor
             "The color value used when temperature is above the limit"
         );
 
+        public static GUIContent temperatureBiasLabel = EditorGUIUtility.TrTextContent(
+            "Temperature Bias",
+            "Configures how much the color should shift around a given temperature"
+        );
+
         public static GUIContent visualizeTempLabel = EditorGUIUtility.TrTextContent(
             "Visualize Temperature",
             "Whether temperature should be animated (i.e change color)"
@@ -118,12 +125,15 @@ public class BayAnimatorEditor : Editor
 
     void OnEnable()
     {
+        thisScript = serializedObject.FindProperty("m_Script");
+
         overrideDataFeed = serializedObject.FindProperty(nameof(BayAnimator.OverrideDataFeed));
 
         coldTemperature = serializedObject.FindProperty(nameof(BayAnimator.ColdTemperature));
         coldColor = serializedObject.FindProperty(nameof(BayAnimator.ColdColor));
         warmTemperature = serializedObject.FindProperty(nameof(BayAnimator.WarmTemperature));
         warmColor = serializedObject.FindProperty(nameof(BayAnimator.WarmColor));
+        temperatureBias = serializedObject.FindProperty(nameof(BayAnimator.TemperatureBias));
         visualizeTemperature = serializedObject.FindProperty(nameof(BayAnimator.VisualizeTemperature));
         temperatureOverride = serializedObject.FindProperty(nameof(BayAnimator.TemperatureOverride));
 
@@ -148,6 +158,10 @@ public class BayAnimatorEditor : Editor
         BayAnimator anim = (BayAnimator)target;
         serializedObject.Update();
 
+        GUI.enabled = false;
+        EditorGUILayout.PropertyField(thisScript, true, new GUILayoutOption[0]);
+        GUI.enabled = true;
+
         EditorGUILayout.PropertyField(overrideDataFeed);
 
         EditorStyles.foldout.fontStyle = FontStyle.Bold;
@@ -160,6 +174,7 @@ public class BayAnimatorEditor : Editor
 
             EditorGUILayout.PropertyField(warmTemperature, Styles.warmTempLabel);
             EditorGUILayout.PropertyField(warmColor, Styles.warmColorLabel);
+            EditorGUILayout.PropertyField(temperatureBias, Styles.temperatureBiasLabel);
 
             EditorGUILayout.PropertyField(visualizeTemperature, Styles.visualizeTempLabel);
 

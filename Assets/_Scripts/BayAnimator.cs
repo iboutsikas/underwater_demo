@@ -30,6 +30,8 @@ public class BayAnimator : MonoBehaviour
     public Color ColdColor = Color.blue;
     [Range(0, 100)]
     public float ColdTemperature = 10.0f;
+    [Range(0.0f, 1.0f)]
+    public float TemperatureBias = 0.0f;
 
     public bool VisualizeOxygen = false;
 
@@ -113,11 +115,14 @@ public class BayAnimator : MonoBehaviour
             return;
 
         float temperature = data.Temperature;
+        float time = Time.time;
 
 #if UNITY_EDITOR
         temperature = OverrideDataFeed ? TemperatureOverride : temperature;
+        time = (float)EditorApplication.timeSinceStartup;
 #endif
         float t = (temperature - ColdTemperature) / (WarmTemperature - ColdTemperature);
+        t += (Mathf.Sin(time) * TemperatureBias);
         currentColor = Color.Lerp(ColdColor, WarmColor, t);
     }
 
