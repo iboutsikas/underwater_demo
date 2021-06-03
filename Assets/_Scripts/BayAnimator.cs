@@ -84,7 +84,10 @@ public class BayAnimator : MonoBehaviour
     void OnEditorUpdate()
     {
         if (!EditorApplication.isPlaying)
+        {
             ProcessSelf();
+            ApplyChanges();
+        }
     }
 
     void Start()
@@ -176,10 +179,11 @@ public class BayAnimator : MonoBehaviour
     private void FixedUpdate()
     {
         ProcessSelf();
+        ApplyChanges();
     }
 
     // Update is called once per frame
-    void Update()
+    void ApplyChanges()
     {
         foreach (var c in materialModifiers)
         {

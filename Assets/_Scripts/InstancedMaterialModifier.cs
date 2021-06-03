@@ -124,7 +124,7 @@ public class InstancedMaterialModifier : MonoBehaviour
     {
         if (meshRenderer == null)
             return;
-        UpdateColor();
+        UpdateEmissionColor();
         UpdateOffset();
         UpdateAlpha();
     }
@@ -147,21 +147,21 @@ public class InstancedMaterialModifier : MonoBehaviour
     private void OnEditorUpdate()
     {
 #if UNITY_EDITOR
-        if (!EditorApplication.isPlaying && meshRenderer != null)
+        if (!EditorApplication.isPlaying)
         {
-            UpdateColor();
+            UpdateEmissionColor();
             UpdateOffset();
             UpdateAlpha();
         }
 #endif
     }
 
-    private void UpdateColor()
+    private void UpdateEmissionColor()
     {
 
         if (!emissionEnabled)
             return;
-
+        
         MaterialPropertyBlock props = new MaterialPropertyBlock();
 
         props.SetColor(EmissionColorPropertyName, EmissionColor);
