@@ -20,6 +20,7 @@ public class BayAnimatorEditor : Editor
 
     // ==================== Oxygen =====================
     SerializedProperty oxygenOverride;
+    SerializedProperty oxygenUpperBound;
     SerializedProperty visualizeOxygen;
     bool showOxygen = true;
 
@@ -39,21 +40,26 @@ public class BayAnimatorEditor : Editor
     SerializedProperty maxChlorophyll;
     bool showChlorophyll = true;
 
+    // =================== Salinity ====================
+    SerializedProperty visualizeSalinity;
+    SerializedProperty minSalinity;
+    SerializedProperty minRotationSpeed;
+    SerializedProperty maxSalinity;
+    SerializedProperty maxRotationSpeed;
+    SerializedProperty salinityOverride;
+    bool showSalinity = true;
+
 #pragma warning disable 0414
     // =================== Turbidity ===================
     //SerializedProperty overrideTurbidity;
     //SerializedProperty visualizeTurbidity;
     bool showTurbidity = true;
-
-    // =================== Salinity ====================
-    bool visualizeSalinity;
-    bool showSalinity = true;
 #pragma warning restore 0414
 
     internal class Styles
     {
         public static GUIContent coldTempLabel = EditorGUIUtility.TrTextContent(
-            "Cold temperature (°F)", 
+            "Cold temperature (°C)", 
             "The model will be using the cold color when temperature is below this value"
         );
 
@@ -63,7 +69,7 @@ public class BayAnimatorEditor : Editor
         );
 
         public static GUIContent warmTempLabel = EditorGUIUtility.TrTextContent(
-            "Warm temperature (°F)",
+            "Warm temperature (°C)",
             "The model will be using the warm color when temperature is above this value"
         );
 
@@ -85,6 +91,16 @@ public class BayAnimatorEditor : Editor
         public static GUIContent visualizeOxygenLabel = EditorGUIUtility.TrTextContent(
             "Visualize Oxygen",
             "Whether oxygen should be animated (i.e change scale)"
+        );
+
+        public static GUIContent oxygenUpperBoundLabel = EditorGUIUtility.TrTextContent(
+            "Oxygen upper bound",
+            "If oxygen is above this value, the animation will play at it's fullest"
+        );
+
+        public static GUIContent oxygenOverrideLabel = EditorGUIUtility.TrTextContent(
+            "Oxygen override (μg/L)",
+            "If oxygen is above this value, the animation will play at it's fullest"
         );
 
         public static GUIContent visualizePhLabel = EditorGUIUtility.TrTextContent(
@@ -121,6 +137,31 @@ public class BayAnimatorEditor : Editor
             "Maximum Chlorophyll",
             "If chlorophyll is above this number, the model will always have its maximum opacity"
         );
+        
+        public static GUIContent visualizeSalinityLabel = EditorGUIUtility.TrTextContent(
+            "Visualize Salinity",
+            "Whether salinity should be animated (i.e. change rotation speed)"
+        );
+
+        public static GUIContent minSalinityLabel = EditorGUIUtility.TrTextContent(
+            "Minimum Salinity",
+            "If salinity is below this level, the model will have its minimum rotation speed"
+        );
+        
+        public static GUIContent minSpeedLabel = EditorGUIUtility.TrTextContent(
+            "Minimum Rotation Speed",
+            "Rotation speed will not go bellow this value. 0 to turn off, 1 to leave it to animation's default"
+        );
+        
+        public static GUIContent maxSalinityLabel = EditorGUIUtility.TrTextContent(
+            "Maximum Salinity",
+            "If salinity is above this threshold, the model will use its maximum rotation speed"
+        );
+        
+        public static GUIContent maxSpeedLabel = EditorGUIUtility.TrTextContent(
+            "Maximum Rotation Speed",
+            "Rotation speed will not go above this value"
+        );
     }
 
     void OnEnable()
@@ -129,15 +170,17 @@ public class BayAnimatorEditor : Editor
 
         overrideDataFeed = serializedObject.FindProperty(nameof(BayAnimator.OverrideDataFeed));
 
+        visualizeTemperature = serializedObject.FindProperty(nameof(BayAnimator.VisualizeTemperature));
         coldTemperature = serializedObject.FindProperty(nameof(BayAnimator.ColdTemperature));
         coldColor = serializedObject.FindProperty(nameof(BayAnimator.ColdColor));
         warmTemperature = serializedObject.FindProperty(nameof(BayAnimator.WarmTemperature));
         warmColor = serializedObject.FindProperty(nameof(BayAnimator.WarmColor));
         temperatureBias = serializedObject.FindProperty(nameof(BayAnimator.TemperatureBias));
-        visualizeTemperature = serializedObject.FindProperty(nameof(BayAnimator.VisualizeTemperature));
         temperatureOverride = serializedObject.FindProperty(nameof(BayAnimator.TemperatureOverride));
 
+
         visualizeOxygen = serializedObject.FindProperty(nameof(BayAnimator.VisualizeOxygen));
+        oxygenUpperBound = serializedObject.FindProperty(nameof(BayAnimator.OxygenUpperBound));
         oxygenOverride = serializedObject.FindProperty(nameof(BayAnimator.OxygenOverride));
 
         visualizePH = serializedObject.FindProperty(nameof(BayAnimator.VisualizePH));
@@ -151,6 +194,13 @@ public class BayAnimatorEditor : Editor
         minChlorophyll = serializedObject.FindProperty(nameof(BayAnimator.MinChlf));
         maxChlorophyll = serializedObject.FindProperty(nameof(BayAnimator.MaxChlf));
         chlorophyllOverride = serializedObject.FindProperty(nameof(BayAnimator.ClorophyllOverride));
+
+        visualizeSalinity = serializedObject.FindProperty(nameof(BayAnimator.VisualizeSalinity));
+        minSalinity = serializedObject.FindProperty(nameof(BayAnimator.MinSalinity));
+        minRotationSpeed = serializedObject.FindProperty(nameof(BayAnimator.MinRotationSpeed));
+        maxSalinity = serializedObject.FindProperty(nameof(BayAnimator.MaxSalinity));
+        maxRotationSpeed = serializedObject.FindProperty(nameof(BayAnimator.MaxRotationSpeed));
+        salinityOverride = serializedObject.FindProperty(nameof(BayAnimator.SalinityOverride));
     }
 
     public override void OnInspectorGUI()
@@ -169,6 +219,8 @@ public class BayAnimatorEditor : Editor
         showTemperature = EditorGUILayout.Foldout(showTemperature, "Temperature", true);
         if (showTemperature)
         {
+            EditorGUILayout.PropertyField(visualizeTemperature, Styles.visualizeTempLabel);
+
             EditorGUILayout.PropertyField(coldTemperature, Styles.coldTempLabel);
             EditorGUILayout.PropertyField(coldColor, Styles.coldColorLabel);
 
@@ -176,24 +228,24 @@ public class BayAnimatorEditor : Editor
             EditorGUILayout.PropertyField(warmColor, Styles.warmColorLabel);
             EditorGUILayout.PropertyField(temperatureBias, Styles.temperatureBiasLabel);
 
-            EditorGUILayout.PropertyField(visualizeTemperature, Styles.visualizeTempLabel);
-
             if (overrideDataFeed.boolValue)
             {
-                temperatureOverride.floatValue = EditorGUILayout.Slider("Override temperature (°F)", temperatureOverride.floatValue, coldTemperature.floatValue, warmTemperature.floatValue);
+                temperatureOverride.floatValue = EditorGUILayout.Slider("Override temperature (°C)", temperatureOverride.floatValue, coldTemperature.floatValue, warmTemperature.floatValue);
             }
         }
         EditorGUILayout.Separator();
         DrawHorizontalLine(2);
+        
         // ==================== Oxygen =====================
         showOxygen = EditorGUILayout.Foldout(showOxygen, "Oxygen", true);
         if (showOxygen)
         {
             EditorGUILayout.PropertyField(visualizeOxygen, Styles.visualizeOxygenLabel);
+            EditorGUILayout.PropertyField(oxygenUpperBound, Styles.oxygenUpperBoundLabel);
 
             if (overrideDataFeed.boolValue)
             {
-                oxygenOverride.floatValue = EditorGUILayout.FloatField("Override oxygen (mg/L)",oxygenOverride.floatValue);
+                EditorGUILayout.PropertyField(oxygenOverride, Styles.oxygenOverrideLabel);
             }
         }
         EditorGUILayout.Separator();
@@ -234,6 +286,25 @@ public class BayAnimatorEditor : Editor
         }
         EditorGUILayout.Separator();
         DrawHorizontalLine(2);
+
+        // =================== Salinity ====================
+        showSalinity = EditorGUILayout.Foldout(showSalinity, "Salinity", true);
+        if (showSalinity)
+        {
+            EditorGUILayout.PropertyField(visualizeSalinity, Styles.visualizeSalinityLabel);
+            EditorGUILayout.PropertyField(minSalinity, Styles.minSalinityLabel);
+            EditorGUILayout.PropertyField(minRotationSpeed, Styles.minSpeedLabel);
+            EditorGUILayout.PropertyField(maxSalinity, Styles.maxSalinityLabel);
+            EditorGUILayout.PropertyField(maxRotationSpeed, Styles.maxSpeedLabel);
+
+            if (overrideDataFeed.boolValue)
+            {
+                EditorGUILayout.PropertyField(salinityOverride);
+            }
+        }
+        EditorGUILayout.Separator();
+        DrawHorizontalLine(2);
+
 #if false
 
         // =================== Turbidity ===================
@@ -249,15 +320,7 @@ public class BayAnimatorEditor : Editor
         EditorGUILayout.Separator();
         DrawHorizontalLine(2);
 
-        // =================== Salinity ====================
-        showSalinity = EditorGUILayout.Foldout(showSalinity, "Salinity", true);
-        if (showSalinity)
-        {
-            EditorGUILayout.LabelField("Not implemented yet");
-            visualizeSalinity = EditorGUILayout.Toggle("Visualize salinity", visualizeSalinity);
-        }
-        EditorGUILayout.Separator();
-        DrawHorizontalLine(2);
+        
 
         
 

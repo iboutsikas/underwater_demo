@@ -40,6 +40,11 @@ public class StationService
     public List<BayData> GetSamples(Guid guid, DateTimeOffset from)
     {
 
+        if (guid == Guid.Empty)
+        {
+            Debug.DebugBreak();
+        }
+
         var dateString = from.ToString("yyyy-MM-ddThh:mm:sszzzz");
 
         HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(api + $"/api/V1/stations/{guid}?include_measurements=true" +

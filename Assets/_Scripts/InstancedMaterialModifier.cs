@@ -10,7 +10,7 @@ public class InstancedMaterialModifier : MonoBehaviour
     static readonly string EmissionFlagName = "_EMISSION";
     static readonly string EmissionColorPropertyName = "_EmissionColor";
     static readonly string TexturePropertyName = "_BaseMap";
-    static readonly string BaseColorPropertyName = "_BaseColor";
+    //static readonly string BaseColorPropertyName = "_BaseColor";
 
     private Renderer meshRenderer;
     private bool emissionEnabled = false;
@@ -22,7 +22,7 @@ public class InstancedMaterialModifier : MonoBehaviour
 
     [SerializeField]
     private Color emissionColor = Color.white;
-    private Color _originalColor = Color.black;
+    private Color _originalEmissionColor = Color.black;
 
     public Color EmissionColor { get => emissionColor; 
         set { 
@@ -34,32 +34,6 @@ public class InstancedMaterialModifier : MonoBehaviour
     public Vector2 InstanceOffset = new Vector2(0, 0);
     [SerializeField]
     public float InstanceAlpha = 1.0f;
-
-    private void OnValidate()
-    {
-        if (meshRenderer == null)
-            meshRenderer = GetComponent<Renderer>();
-        if (_material == null)
-        {
-            _material.CopyPropertiesFromMaterial(meshRenderer.sharedMaterial);
-            _material = new Material(meshRenderer.sharedMaterial.shader);
-            meshRenderer.material = _material;
-        }
-    }
-
-    void Awake()
-    {
-        meshRenderer = GetComponent<Renderer>();
-        
-        if (_material == null)
-        {
-            _material = new Material(meshRenderer.sharedMaterial.shader);
-            _material.CopyPropertiesFromMaterial(meshRenderer.sharedMaterial);
-            meshRenderer.material = _material;
-        }
-
-        _originalColor = _material.GetColor(EmissionColorPropertyName);
-    }
 
     public void EnableEmission()
     {
@@ -81,7 +55,7 @@ public class InstancedMaterialModifier : MonoBehaviour
         _material.DisableKeyword(EmissionFlagName);
 
         MaterialPropertyBlock props = new MaterialPropertyBlock();
-        props.SetColor(EmissionColorPropertyName, _originalColor);
+        props.SetColor(EmissionColorPropertyName, _originalEmissionColor);
         meshRenderer.SetPropertyBlock(props);
 
         emissionEnabled = false;
@@ -135,6 +109,16 @@ public class InstancedMaterialModifier : MonoBehaviour
 #if UNITY_EDITOR
         EditorApplication.update += OnEditorUpdate;
 #endif
+        if (meshRenderer == null)
+            meshRenderer = GetComponent<Renderer>();
+        if (_material == null)
+        {
+            //_material = new Material(meshRenderer.sharedMaterial.shader);
+            //_material.CopyPropertiesFromMaterial(meshRenderer.sharedMaterial);
+            _material = meshRenderer.sharedMaterial;
+            meshRenderer.material = _material;
+        }
+        _originalEmissionColor = _material.GetColor(EmissionColorPropertyName);
     }
 
     private void OnDisable()

@@ -29,7 +29,16 @@ public class DataContainer : ScriptableObjectSingleton<DataContainer>
     private List<BayData> _Samples;
     private Timer _Timer;
 
-    public Station CurrentStation { get; private set; } = null;
+    private Station _currentStation = null;
+    public Station CurrentStation { 
+        get { return _currentStation; } 
+        private set {
+            if (value.Id == Guid.Empty || value == null)
+                Debug.DebugBreak();
+
+            _currentStation = value;
+        } 
+    } 
     public BayData CurrentSample { get; private set; } = null;
 
     [RuntimeInitializeOnLoadMethod]
@@ -112,7 +121,7 @@ public class DataContainer : ScriptableObjectSingleton<DataContainer>
     {
         _Stations = _StationService.GetAllStations();
 
-        if (CurrentStation != null)
+        if (CurrentStation != null && CurrentStation.Id != Guid.Empty)
         {
             _Samples = _StationService.GetSamples(CurrentStation.Id, CurrentStation.LastAttempt);
             CurrentStation.LastAttempt = DateTimeOffset.Now;
